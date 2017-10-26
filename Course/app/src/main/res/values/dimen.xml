@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--星期栏高度-->
+    <dimen name="weekItemHeight">40dp</dimen>
+    <!--星期栏上边距-->
+    <dimen name="weekItemMarTop">0dp</dimen>
+    <!--星期栏左边距-->
+    <dimen name="weekItemMarLeft">0dp</dimen>
+    <!--时段栏高度-->
+    <dimen name="timeIndexHeight">40dp</dimen>
+    <!--时段栏上边距-->
+    <dimen name="timeIndexMarTop">0dp</dimen>
+
+
+    <!--actionBar边距-->
+    <dimen name="actionBarMargin">5dp</dimen>
+    <!--actionBar字体大小-->
+    <dimen name="actionFontSize">22dp</dimen>
+    <!--actionBar高度-->
+    <dimen name="actionBarHeight">60dp</dimen>
+
+    <!---->
+    <dimen name="addCourseXlsWidth">200dp</dimen>
+    <dimen name="btokMarginTop">300dp</dimen>
+    <dimen name="btokWidth">300dp</dimen>
+
+    <!--首页下方按钮栏高度-->
+    <dimen name="courseButtons">70dp</dimen>
+
+    <!--课程内容的高度-->
+    <dimen name="gridItemHeight">80dp</dimen>
+</resources>

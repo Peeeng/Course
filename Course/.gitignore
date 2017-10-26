@@ -1,0 +1,15 @@
+
+
+.gradle/
+.idea/libraries/
+.idea/workspace.xml
+Course.iml
+app/.gitignore
+app/app.iml
+app/build.gradle
+
+app/proguard-rules.pro
+
+build.gradle
+build/
+local.properties

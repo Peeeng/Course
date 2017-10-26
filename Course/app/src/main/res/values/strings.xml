@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Course</string>
+    <string name="course_table">课程表</string>
+    <string name="mon">一</string>
+    <string name="tue">二</string>
+    <string name="wed">三</string>
+    <string name="thur">四</string>
+    <string name="fri">五</string>
+    <string name="sat">六</string>
+    <string name="sun">日</string>
+    <string name="set">设置</string>
+    <string name="mainPage">首页</string>
+    <string name="taskPage">任务</string>
+    <string name="timePage">时间表</string>
+    <string name="selfPage">个人中心◁</string>
+</resources>

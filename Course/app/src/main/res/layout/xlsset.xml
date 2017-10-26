@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:androi="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".XlsSetActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarHeight"
+        android:background="@color/myActionBar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/app_name"
+            android:layout_marginLeft="@dimen/actionBarMargin"
+            android:textSize="@dimen/actionFontSize" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="课程文件:"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
+            android:layout_weight="0.89" />
+
+        <EditText
+            android:id="@+id/editXlsUrl"
+            android:layout_width="181dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/btSelectXls"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:text="浏览" />
+
+        <Button
+            android:id="@+id/btShowXls"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:text="预览" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="当前周次:"
+            android:layout_weight="0.11" />
+
+        <Spinner
+            android:id="@+id/spinnerWeek"
+            android:layout_width="148dp"
+            android:layout_height="match_parent"
+            android:entries="@array/spinnerArray"
+            android:layout_weight="0.83"
+            android:textAlignment="center">
+
+        </Spinner>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btOk"
+        android:layout_width="@dimen/btokWidth"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/btokMarginTop"/>
+
+</LinearLayout>

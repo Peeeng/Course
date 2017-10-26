@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.j_king.course.CourseActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".CourseActivity"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarHeight"
+            android:background="@color/myActionBar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/actionBarMargin"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:text="@string/app_name"
+                android:textSize="@dimen/actionFontSize" />
+
+            <Spinner
+                android:id="@+id/selectWeek"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:entries="@array/spinnerArray"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/btSet"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:text="@string/set" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/weekName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/timeIndexHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="0.27"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/weekItemHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="1"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/mon" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/weekItemHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="1"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/tue" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/weekItemHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="1"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/wed" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/weekItemHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="1"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/thur" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/weekItemHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="1"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/fri" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/weekItemHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="1"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/sat" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/weekItemHeight"
+                android:layout_marginLeft="@dimen/weekItemMarLeft"
+                android:layout_weight="1"
+                android:background="@color/classIndex"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/sun" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/contentPanel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/weekPanel_0"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginStart="@dimen/weekItemMarLeft"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="1" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="2" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="3" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="4" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="5" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="6" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="7" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="8" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="9" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="10" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="11" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/weekItemHeight"
+                        android:layout_marginTop="@dimen/timeIndexMarTop"
+                        android:background="@color/classIndex"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="12" />
+                </LinearLayout>
+                <!-- 周一到周日的课程排列 -->
+                <com.example.j_king.myView.LineGridView
+                    android:id="@+id/gridCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:numColumns="7">
+
+                </com.example.j_king.myView.LineGridView>
+            </LinearLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/courseButtons">
+
+            <Button
+                android:id="@+id/btMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mainPage" />
+
+            <Button
+                android:id="@+id/btTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/taskPage" />
+
+            <Button
+                android:id="@+id/btTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/timePage" />
+
+            <Button
+                android:id="@+id/btSelf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/selfPage" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

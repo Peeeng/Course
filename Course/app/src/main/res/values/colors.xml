@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="classIndex" >#d0cbe2</color>
+    <color name="courseTextColor" >#FFD0CBE2</color>
+    <color name="actionBarBg">#6666CC</color>
+    <color name="actionBarText">#EDEDED</color>
+    <color name="myActionBar">#FF4D529B</color>
+    <color name="transparent">#00000000</color>
+    <color name="grid_line">#999999</color>
+</resources>
