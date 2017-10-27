@@ -49,14 +49,15 @@
             android:id="@+id/weekName"
             android:layout_width="match_parent"
             android:paddingEnd="5dp"
+            android:background="@color/classIndex"
             android:layout_height="@dimen/weekItemHeight"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="15dp"
+                android:layout_width="@dimen/weekItemWidth"
                 android:layout_height="@dimen/timeIndexHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="" />
 
@@ -65,7 +66,7 @@
                 android:layout_height="@dimen/weekItemHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
                 android:layout_weight="1"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/mon" />
 
@@ -74,7 +75,7 @@
                 android:layout_height="@dimen/weekItemHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
                 android:layout_weight="1"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/tue" />
 
@@ -83,7 +84,7 @@
                 android:layout_height="@dimen/weekItemHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
                 android:layout_weight="1"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/wed" />
 
@@ -92,7 +93,7 @@
                 android:layout_height="@dimen/weekItemHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
                 android:layout_weight="1"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/thur" />
 
@@ -101,7 +102,7 @@
                 android:layout_height="@dimen/weekItemHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
                 android:layout_weight="1"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/fri" />
 
@@ -110,7 +111,7 @@
                 android:layout_height="@dimen/weekItemHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
                 android:layout_weight="1"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/sat" />
 
@@ -119,7 +120,7 @@
                 android:layout_height="@dimen/weekItemHeight"
                 android:layout_marginLeft="@dimen/weekItemMarLeft"
                 android:layout_weight="1"
-                android:background="@color/classIndex"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/sun" />
 
@@ -129,6 +130,7 @@
             android:id="@+id/scrollPanel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@drawable/timg"
             android:layout_weight="1"
             android:paddingEnd="5dp"
 
@@ -142,7 +144,7 @@
 
                 <LinearLayout
                     android:id="@+id/weekPanel_0"
-                    android:layout_width="15dp"
+                    android:layout_width="@dimen/timeIndexWidth"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -151,7 +153,6 @@
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginStart="@dimen/weekItemMarLeft"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="1" />
 
@@ -159,7 +160,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="2" />
 
@@ -167,7 +167,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="3" />
 
@@ -175,7 +175,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="4" />
 
@@ -183,7 +183,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="5" />
 
@@ -191,7 +191,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="6" />
 
@@ -199,7 +199,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="7" />
 
@@ -207,7 +207,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="8" />
 
@@ -215,7 +215,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="9" />
 
@@ -223,7 +223,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="10" />
 
@@ -231,7 +231,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="11" />
 
@@ -239,7 +239,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/weekItemHeight"
                         android:layout_marginTop="@dimen/timeIndexMarTop"
-                        android:background="@color/classIndex"
+                        
                         android:gravity="center_horizontal|center_vertical"
                         android:text="12" />
                 </LinearLayout>
