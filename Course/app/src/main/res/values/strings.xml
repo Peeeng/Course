@@ -12,5 +12,5 @@
     <string name="mainPage">首页</string>
     <string name="taskPage">任务</string>
     <string name="timePage">时间表</string>
-    <string name="selfPage">个人中心◁</string>
+    <string name="selfPage">个人中心</string>
 </resources>
