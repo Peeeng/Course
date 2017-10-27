@@ -16,9 +16,11 @@ public class XlsSetDB {
     public static final int DB_VERSION = 1 ;
     public static final String TAG = "XlsSetDB" ;
 
+    public static final String xlsSetId = "xlsSetId";
     public static final String xlsPath = "xlsPath";
     public static final String curWeek = "curWeek" ;
 
+    public static final String defaultId = "XlsUniqueueId";
     private XlsSetDBHelper xlsSetDBHelper  ;
     private SQLiteDatabase db ;
 
@@ -38,6 +40,7 @@ public class XlsSetDB {
         public void onCreate(SQLiteDatabase db) {
             String sql = "create table " + DB_TABLE +
                     "( "+
+                    xlsSetId + " varchar(20) primary key ," +
                     xlsPath + " varchar(250),"+
                     curWeek + " int " +
                     ")";
@@ -51,6 +54,13 @@ public class XlsSetDB {
         }
     }
 
+
+
+    /**
+     *
+     * @param nullColumnsHack content为空时，新增nullColumnsHack,并为它赋值为空
+     * @param content 要插入的内容
+     */
     public void insertToXlsSet(String nullColumnsHack , ContentValues content){
         db.insert(DB_TABLE,nullColumnsHack,content) ;
         Log.i(TAG, "insertToXlsSet: "+"数据插入成功");
@@ -61,8 +71,14 @@ public class XlsSetDB {
         return cursor ;
     }
 
-    public void deleteTable(){
-        db.delete(DB_TABLE,null,null) ;
+    public int updateByClause(String table,ContentValues values, String whereClause,String[] whereArgs){
+        int rtn = db.update(table,values,whereClause,whereArgs);
+        return rtn ;
+    }
+
+    public int deleteTable(){
+        int  rtn = db.delete(DB_TABLE,null,null) ;
+        return rtn ;
     }
 
 

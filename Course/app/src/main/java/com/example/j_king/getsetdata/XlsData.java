@@ -119,7 +119,17 @@ public class XlsData {
      */
     private int[] splitClassWeeks(String classWeeks){
 
-        if(classWeeks.contains("-")){
+        if(classWeeks.contains(",")){
+            String[] weekBeginEnd = classWeeks.split(",") ;
+            int [] weeks = new int[weekBeginEnd.length];
+            for(int i = 0 ; i < weekBeginEnd.length ;i++ ){
+                if(weekBeginEnd[i].contains("-"))
+                    continue;
+                weeks[i] = Integer.valueOf(weekBeginEnd[i]) ;
+            }
+            return weeks ;
+        }
+        else if(classWeeks.contains("-")){
             String[] weekBeginEnd = classWeeks.split("-") ;
             int begin = Integer.parseInt(weekBeginEnd[0]);
             int end = Integer.parseInt(weekBeginEnd[1]) ;
@@ -129,14 +139,7 @@ public class XlsData {
             }
             return weeks ;
         }
-        else if(classWeeks.contains(",")){
-            String[] weekBeginEnd = classWeeks.split(",") ;
-            int [] weeks = new int[weekBeginEnd.length];
-            for(int i = 0 ; i < weekBeginEnd.length ;i++ ){
-                weeks[i] = Integer.valueOf(weekBeginEnd[i]) ;
-            }
-            return weeks ;
-        }else
+        else
             return new int[]{Integer.valueOf(classWeeks)} ;
 
 

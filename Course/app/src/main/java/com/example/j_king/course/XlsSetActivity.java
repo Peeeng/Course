@@ -1,45 +1,67 @@
 package com.example.j_king.course;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.j_king.getsetdata.CourseDB;
+import com.example.j_king.getsetdata.ReadSqlite;
 import com.example.j_king.getsetdata.XlsSetDB;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Created by J-King on 2017/9/23.
  */
 
 public class XlsSetActivity extends AppCompatActivity {
-    XlsSetDB xlsSetDB ;
-
+    private XlsSetDB xlsSetDB ;
+    private CourseDB courseDB ;
+    private ReadSqlite readSqlite ;
     private Button btSelectXls;
+
+
     private Button btShowXls ;
     private EditText editXlsUrl;
     private Spinner spinnerWeek ;
     private Button btOk ;
 
-
-    private static final int SELECTXLS = 1;
-    private static final int SHOWXLS = 2;
+    private static final int SELECTXLS = 0x0011;
+    private static final int SHOWXLS = 0x0012;
+    public static final int NOCHANGE = 0x0013 ;
+    public static final int CHANGEXLS = 0x0014 ;
+    private static final int REQUEST_EXTERNAL_STRONGE = 0x0015 ;
 
     protected String xlsPath;
     protected int curWeek ;
     private Uri xlsUri;
+    private static final String TAG = "XlsSetActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +69,10 @@ public class XlsSetActivity extends AppCompatActivity {
         setContentView(R.layout.xlsset);
 
         xlsSetDB = new XlsSetDB(XlsSetActivity.this) ;
+        courseDB = new CourseDB(XlsSetActivity.this);
+        readSqlite = new ReadSqlite(XlsSetActivity.this);
+
+        setRequestExternalStronge();
         ActionBar bar = getSupportActionBar();
         bar.hide();
         prepareListen();
@@ -66,7 +92,6 @@ public class XlsSetActivity extends AppCompatActivity {
             editXlsUrl.setText(xlsName);
             spinnerWeek.setSelection(curWeek);
             xlsPath = null ;
-
         }
     }
 
@@ -85,7 +110,7 @@ public class XlsSetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
+                intent.setType("application/vnd.ms-excel|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");//设置类型
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, SELECTXLS);
             }
@@ -99,32 +124,25 @@ public class XlsSetActivity extends AppCompatActivity {
             }
         };
 
+
+        
         View.OnClickListener listenerBtOk = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(xlsPath==null || xlsPath.isEmpty()){
-/*                    Toast toast = Toast.makeText(XlsSetActivity.this,"未修改课程文件",Toast.LENGTH_LONG);
-                    toast.show();*/
-                    Intent intent = new Intent() ;
-                    setResult(RESULT_CANCELED,intent);
-                    finish();
-                }
-                else{
-                    xlsSetDB.deleteTable();
 
-                    curWeek = spinnerWeek.getSelectedItemPosition()  ;
-                    ContentValues contentValues = new ContentValues() ;
-                    contentValues.put(XlsSetDB.curWeek,curWeek) ;
-                    contentValues.put(XlsSetDB.xlsPath,xlsPath) ;
-                    xlsSetDB.insertToXlsSet("1",contentValues);
-
-                    //返回到上一级（主）窗口
-                    Intent intent = new Intent() ;
-                    intent.putExtra("xlsPath",xlsPath);
-                    intent.putExtra("curWeek",curWeek) ;
-                    setResult(RESULT_OK,intent);
-                    finish();
+                if(xlsPath !=  null && !xlsPath.equals("")){
+                    updateCourseTableContent(xlsPath);
                 }
+
+                //返回到上一级（主）窗口
+                Intent intent = new Intent() ;
+                intent.putExtra("xlsPath",xlsPath);
+                curWeek = spinnerWeek.getSelectedItemPosition()  ;
+                intent.putExtra("curWeek",curWeek) ;
+                setResult(CHANGEXLS,intent);
+                updateXlsSetTableContent();
+                finish();
+
 
             }
         };
@@ -164,7 +182,7 @@ public class XlsSetActivity extends AppCompatActivity {
 
     }
 
-    public static String getRealFilePath(final Context context, final Uri uri ) {
+    private  String getRealFilePath(final Context context, final Uri uri ) {
         if ( null == uri ) return null;
         final String scheme = uri.getScheme();
         String data = null;
@@ -187,4 +205,64 @@ public class XlsSetActivity extends AppCompatActivity {
         return data;
     }
 
+    @TargetApi(23)
+    public void setRequestExternalStronge(){
+        Log.i(TAG, "onActivityResult: 当前Android设备支持api版本为："+Build.VERSION.SDK_INT);
+        if(Build.VERSION.SDK_INT >= 23) {
+            int writeStoragePermission = XlsSetActivity.this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (writeStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(XlsSetActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STRONGE);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //根据请求是否通过的返回码进行判断，然后进一步运行程序
+        if (grantResults.length > 0 && requestCode == REQUEST_EXTERNAL_STRONGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            ;
+        }
+
+    }
+
+    /**
+     *
+     * 根据xlsPath更新Course表中内容
+     */
+    public void updateCourseTableContent(String xlsPath){
+        try {
+            InputStream xls = new FileInputStream(new File(xlsPath ));
+            courseDB.deleteTable();
+            List<ContentValues> courseList =  readSqlite.getXlsContentValues(xls);
+            for(ContentValues values : courseList){
+                courseDB.insertCourse(values);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateXlsSetTableContent(){
+
+        //修改系统设置表里的路径和周次
+        curWeek = spinnerWeek.getSelectedItemPosition()  ;
+        ContentValues contentValues = new ContentValues() ;
+        contentValues.put(XlsSetDB.curWeek,curWeek) ;
+        if(xlsPath != null && !xlsPath.equals(""))
+            contentValues.put(XlsSetDB.xlsPath,xlsPath) ;
+        Cursor cur = xlsSetDB.queryFromXlsSet(new String[]{XlsSetDB.xlsPath,XlsSetDB.curWeek},null,null,null,null,null);
+        if (cur.getCount() <= 0 ){
+            contentValues.put(XlsSetDB.xlsSetId,XlsSetDB.defaultId);
+            xlsSetDB.insertToXlsSet("1",contentValues);
+        }
+        else if (cur.getCount()==1){
+            int rtn = xlsSetDB.updateByClause(XlsSetDB.DB_TABLE,contentValues,XlsSetDB.xlsSetId+"='"+XlsSetDB.defaultId+"'",null);
+            Log.i(TAG, "updateXlsSetTableContent: 更新状态--"+rtn);
+        }
+        else
+            //删除表
+            xlsSetDB.deleteTable();
+    }
 }
