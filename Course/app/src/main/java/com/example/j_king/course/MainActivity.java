@@ -1,19 +1,15 @@
 package com.example.j_king.course;
 
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,21 +17,14 @@ import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.CurWeekSet;
 import com.example.j_king.getsetdata.ReadSqlite;
-import com.example.j_king.getsetdata.XlsData;
 import com.example.j_king.getsetdata.XlsSetDB;
 
 
