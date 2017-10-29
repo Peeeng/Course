@@ -34,6 +34,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,16 +85,20 @@ public class XlsSetActivity extends AppCompatActivity {
 
     public void initData(){
         Cursor cur = xlsSetDB.queryFromXlsSet(new String[]{XlsSetDB.xlsPath,XlsSetDB.curWeek},null,null,null,null,null);
-        if (cur.getCount() != 0 ){
+        if (cur.getCount() > 0 ){
             cur.moveToFirst() ;
             xlsPath = cur.getString(cur.getColumnIndex(XlsSetDB.xlsPath)) ;
             curWeek = cur.getInt(cur.getColumnIndex(XlsSetDB.curWeek)) ;
-            String [] tmp = xlsPath.split("/");
-            String xlsName = tmp[tmp.length-1];
-            editXlsUrl.setText(xlsName);
+            if(xlsPath != null && !xlsPath.equals("")){
+                String [] tmp = xlsPath.split("/");
+                String xlsName = tmp[tmp.length-1];
+                editXlsUrl.setText(xlsName);
+            }
+
             spinnerWeek.setSelection(curWeek);
             xlsPath = null ;
         }
+        cur.close();
     }
 
     /**
@@ -138,9 +144,10 @@ public class XlsSetActivity extends AppCompatActivity {
                 Intent intent = new Intent() ;
                 intent.putExtra("xlsPath",xlsPath);
                 curWeek = spinnerWeek.getSelectedItemPosition()  ;
+                updateXlsSetTableContent();
                 intent.putExtra("curWeek",curWeek) ;
                 setResult(CHANGEXLS,intent);
-                updateXlsSetTableContent();
+
                 finish();
 
 
@@ -199,8 +206,9 @@ public class XlsSetActivity extends AppCompatActivity {
                         data = cursor.getString( index );
                     }
                 }
-                cursor.close();
+
             }
+            cursor.close();
         }
         return data;
     }
@@ -250,6 +258,8 @@ public class XlsSetActivity extends AppCompatActivity {
         curWeek = spinnerWeek.getSelectedItemPosition()  ;
         ContentValues contentValues = new ContentValues() ;
         contentValues.put(XlsSetDB.curWeek,curWeek) ;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        contentValues.put(XlsSetDB.startDate,simpleDateFormat.format(new Date())) ;
         if(xlsPath != null && !xlsPath.equals(""))
             contentValues.put(XlsSetDB.xlsPath,xlsPath) ;
         Cursor cur = xlsSetDB.queryFromXlsSet(new String[]{XlsSetDB.xlsPath,XlsSetDB.curWeek},null,null,null,null,null);
@@ -264,5 +274,7 @@ public class XlsSetActivity extends AppCompatActivity {
         else
             //删除表
             xlsSetDB.deleteTable();
+        cur.close();
     }
 }
+

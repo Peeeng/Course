@@ -9,7 +9,6 @@ import com.facebook.stetho.Stetho;
  */
 
 public class MyApplication extends Application {
-    String aaaaa;
     @Override
     public void onCreate(){
         super.onCreate();

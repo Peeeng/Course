@@ -16,9 +16,11 @@ public class XlsSetDB {
     public static final int DB_VERSION = 1 ;
     public static final String TAG = "XlsSetDB" ;
 
+    //xlsset表的主键，id
     public static final String xlsSetId = "xlsSetId";
     public static final String xlsPath = "xlsPath";
     public static final String curWeek = "curWeek" ;
+    public static final String startDate = "startDate" ;
 
     public static final String defaultId = "XlsUniqueueId";
     private XlsSetDBHelper xlsSetDBHelper  ;
@@ -42,7 +44,8 @@ public class XlsSetDB {
                     "( "+
                     xlsSetId + " varchar(20) primary key ," +
                     xlsPath + " varchar(250),"+
-                    curWeek + " int " +
+                    curWeek + " int ," +
+                    startDate + " varchar(50) " +
                     ")";
             db.execSQL(sql);
             Log.i(TAG, "onCreate: "+DB_TABLE+"表创建成功");
@@ -62,8 +65,8 @@ public class XlsSetDB {
      * @param content 要插入的内容
      */
     public void insertToXlsSet(String nullColumnsHack , ContentValues content){
-        db.insert(DB_TABLE,nullColumnsHack,content) ;
-        Log.i(TAG, "insertToXlsSet: "+"数据插入成功");
+        long i = db.insert(DB_TABLE,nullColumnsHack,content) ;
+        Log.v(TAG, "insertToXlsSet: "+"数据插入成功");
     }
 
     public Cursor queryFromXlsSet(String [] columns,String selection,String [] selectionArgs,String groupBy,String having,String orderBy){

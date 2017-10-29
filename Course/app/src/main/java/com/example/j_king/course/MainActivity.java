@@ -25,12 +25,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.j_king.getsetdata.CourseDB;
+import com.example.j_king.getsetdata.CurWeekSet;
 import com.example.j_king.getsetdata.ReadSqlite;
 import com.example.j_king.getsetdata.XlsData;
 import com.example.j_king.getsetdata.XlsSetDB;
@@ -97,13 +100,26 @@ public class MainActivity extends AppCompatActivity {
      * 初始化数据：设置当前周次
      */
     private void setCurWeek(){
-        Cursor cursor = new XlsSetDB(this).queryFromXlsSet(new String[]{XlsSetDB.curWeek},null,null,null,null,null) ;
-        if(cursor.getCount() == 1){
-            cursor.moveToFirst() ;
-            int curWeek = cursor.getInt(cursor.getColumnIndex(XlsSetDB.curWeek));
-            selectWeek.setSelection(curWeek);
-            cursor.close();
+        //计算当前周次
+        CurWeekSet curWeekSet = new CurWeekSet(this) ;
+        int curWeek = curWeekSet.getNewCurWeek() ;
+        //更新xlsset表中的curWeek
+        ContentValues values = new ContentValues() ;
+        values.put(XlsSetDB.curWeek , curWeek) ;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        values.put(XlsSetDB.startDate,simpleDateFormat.format(new Date())) ;
+
+        XlsSetDB xlsSetDB = new XlsSetDB(this) ;
+        Cursor cur = xlsSetDB.queryFromXlsSet(new String[]{XlsSetDB.xlsSetId},null,null,null,null,null) ;
+        if(cur.getCount() <= 0){
+            values.put(XlsSetDB.xlsSetId,XlsSetDB.defaultId) ;
+            xlsSetDB.insertToXlsSet("1",values) ;
+        }else{
+            xlsSetDB.updateByClause(XlsSetDB.DB_TABLE,values,null,null);
         }
+        cur.close();
+        //设置下拉框的值为当前周次
+        selectWeek.setSelection(curWeek);
     }
 
 
