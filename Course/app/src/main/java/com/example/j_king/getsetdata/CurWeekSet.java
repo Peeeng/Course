@@ -37,7 +37,7 @@ public class CurWeekSet {
         }
         else{
             curWeek = 0 ;
-            SimpleDateFormat tmp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat tmp = new SimpleDateFormat("yyyy-MM-dd");
             startDate = tmp.format(new Date()) ;
         }
         cur.close();
@@ -60,8 +60,9 @@ public class CurWeekSet {
         //获取设置当前周次时间的星期，日1，一2
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(sDate);
-        int sDay = calendar.get(Calendar.DAY_OF_WEEK);
-        int addWeek = (sDay - 1)/6 ;
+        //计算当前星期，从周一到周日分别对应0-6
+        int sDay = (calendar.get(Calendar.DAY_OF_WEEK) + 5 ) % 7;
+        int addWeek = (sDay  + (int)gapDay)/7;
         int newCurWeek = curWeek + addWeek ;
         return newCurWeek ;
     }

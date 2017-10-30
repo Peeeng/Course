@@ -33,4 +33,7 @@
 
     <!--课程内容的高度-->
     <dimen name="gridItemHeight">80dp</dimen>
+
+    <!--课程内容内边距-->
+    <dimen name="courseItemPadding">2dp</dimen>
 </resources>

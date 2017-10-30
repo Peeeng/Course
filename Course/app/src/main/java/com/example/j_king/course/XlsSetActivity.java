@@ -116,7 +116,7 @@ public class XlsSetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("application/vnd.ms-excel|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");//设置类型
+                intent.setType("application/vnd.ms-excel");//设置类型为.xls
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, SELECTXLS);
             }

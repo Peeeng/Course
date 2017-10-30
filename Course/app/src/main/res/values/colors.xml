@@ -5,9 +5,19 @@
     <color name="colorAccent">#FF4081</color>
     <color name="classIndex" >#d0cbe2</color>
     <color name="courseTextColor" >#FFD0CBE2</color>
-    <color name="actionBarBg">#6666CC</color>
+    <color name="actionBarBg">#61779b</color>
     <color name="actionBarText">#EDEDED</color>
-    <color name="myActionBar">#FF4D529B</color>
+    <color name="myActionBar">#5c61b2</color>
     <color name="transparent">#00000000</color>
     <color name="grid_line">#999999</color>
+
+    <array name="itemColors">
+        <item>#bd7840</item>
+        <item>#51b941</item>
+        <item>#49b9b5</item>
+        <item>#526bb4</item>
+        <item>#7b40b5</item>
+        <item>#9a4096</item>
+        <item>#b84771</item>
+    </array>
 </resources>
