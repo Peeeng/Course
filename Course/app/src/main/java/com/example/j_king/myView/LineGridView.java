@@ -39,13 +39,9 @@ public class LineGridView extends GridView {
         int total = getChildCount();  //获取Item总数
 
         //计算行数
-        if (total % colnum == 0) {
-            rownum = total / colnum;
-        } else {
-            rownum = (total / colnum) + 1; //当余数不为0时，要把结果加上1
-        }
-        Paint localPaint; //设置画笔
-        localPaint = new Paint();
+        rownum = (total-1)/colnum + 1 ;
+
+        Paint localPaint = new Paint();//设置画笔
         localPaint.setStyle(Paint.Style.STROKE); //画笔实心
         localPaint.setColor(getContext().getResources().getColor(R.color.grid_line));//画笔颜色
 

@@ -3,14 +3,19 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="classIndex" >#d0cbe2</color>
-    <color name="courseTextColor" >#FFD0CBE2</color>
-    <color name="actionBarBg">#61779b</color>
+
+
+    <color name="weekDayBg" >#d0cbe2</color>
+
+    <!--操作栏背景、文本、按钮颜色-->
     <color name="actionBarText">#EDEDED</color>
     <color name="myActionBar">#5c61b2</color>
     <color name="transparent">#00000000</color>
+
+    <!--gridview 的线条颜色-->
     <color name="grid_line">#999999</color>
 
+    <!--周一到周日7 天的颜色数组-->
     <array name="itemColors">
         <item>#bd7840</item>
         <item>#51b941</item>
@@ -20,4 +25,7 @@
         <item>#9a4096</item>
         <item>#b84771</item>
     </array>
+
+    <!--导航按钮颜色-->
+    <color name="navBtBg">#042242</color>
 </resources>

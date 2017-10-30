@@ -55,16 +55,16 @@ public class ReadSqlite {
      * @param week 当前学习周次
      * @return
      */
-    public List< Map<String , String> > getSelectWeekData(String week){
+    public List< Map<String , String> > getSelectWeekData(Integer week){
         List< Map<String , String > > cNameAndtNameList = new ArrayList<>() ;
 
         String [] columns = new String[]{CourseDB.cName,CourseDB.cAddr,CourseDB.cWeekday,CourseDB.cTime};
         String selection = CourseDB.cWeeks+"=? and "+CourseDB.cTime + "=? and " +CourseDB.cWeekday + "= ?";
 
-        for(int times = 1 ;times <= 6 ;times ++ )
-            for(int weekday = 1 ; weekday <= 7 ;weekday++){
+        for(int times = 1 ;times <= 12 ;times = times + 2 )
+            for(int weekday = 0 ; weekday <= 6 ;weekday++){
 
-                String []selectionArgs = new String[]{ week,Integer.valueOf(times+2).toString(),Integer.valueOf(weekday).toString()};
+                String []selectionArgs = new String[]{ week.toString(),Integer.valueOf(times).toString(),Integer.valueOf(weekday).toString()};
                 Cursor cursor = courseDB.queryCourse(columns,selection,selectionArgs,null,null,null);
                 int num = cursor.getCount();
                 if(num == 0 ){

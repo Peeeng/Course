@@ -81,8 +81,27 @@ public class MainActivity extends AppCompatActivity {
                 selectWeek.setSelection(0);
             }
         };
+
+        AdapterView.OnItemClickListener listenerGridCourse = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //行求商，列求余。
+                //获取当前周次
+                int curWeek = selectWeek.getSelectedItemPosition() + 1;
+                int colnum = gridCourse.getNumColumns() ;//获取列数量
+                int rowIndex = position / colnum ;//获取行标，从 0 开始计数
+                //获取当前点击的上课节次
+                int cTime = rowIndex * 2 + 1;
+                //获取当前点击的星期
+                int cWeekDay = position % colnum;
+                showCourseDetails(curWeek,cWeekDay,cTime);
+
+            }
+        };
+
         btSet.setOnClickListener(listenerSet);
         selectWeek.setOnItemSelectedListener(listenerSelectWeek);
+        gridCourse.setOnItemClickListener(listenerGridCourse);
     }
 
     /**
@@ -119,36 +138,43 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode){
             case REQUEST_XLSSET_ACTIVITY:
                 if(resultCode == XlsSetActivity.CHANGEXLS){
-                    int curWeek = data.getIntExtra("curWeek",1) ;
-                    showWeekCourse(curWeek);
+                    int position = data.getIntExtra("curWeek",1) ;
+                    showWeekCourse(position);
                 }
                 else if(resultCode == XlsSetActivity.NOCHANGE){
-                    int curWeek = data.getIntExtra("curWeek",1) ;
+                    int position = data.getIntExtra("curWeek",1) ;
 
-                    showWeekCourse(curWeek);
+                    showWeekCourse(position);
                 }
                 break ;
         }
     }
 
-    private void showWeekCourse(int curWeek){
-        String [] selectItemValue=
-                {
-                        "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"
-                };
-        selectWeek.setSelection(curWeek);
-        String week = Integer.valueOf(selectItemValue[curWeek]).toString() ;
+    private void showWeekCourse(int position){
 
+        selectWeek.setSelection(position);
+        Integer curWeek = new Integer(position+1) ;
         String [] from = new String [] { CourseDB.cName,CourseDB.cTeacher} ;
         int [] to = new int[]{R.id.courseName,R.id.teacherName} ;
-        List <Map<String,String>> cNameAndtNameList =  readSqlite.getSelectWeekData(week) ;
+        List <Map<String,String>> cNameAndtNameList =  readSqlite.getSelectWeekData(curWeek) ;
         SimpleAdapter simpleAdapter = new SimpleAdapter(MainActivity.this,cNameAndtNameList,R.layout.courseitem,from,to) ;
 
         gridCourse.setAdapter(simpleAdapter);
     }
+    private void  showCourseDetails(Integer curWeek , Integer cWeekDay , Integer cTime){
+        CourseDB courseDB = new CourseDB(MainActivity.this) ;
+        String selections =
+                CourseDB.cWeeks +"=? and "+
+                CourseDB.cWeekday +"=? and " +
+                CourseDB.cTime + "=?" ;
+        String []selectArgs = new String[]{curWeek.toString(),cWeekDay.toString(),cTime.toString()} ;
+        Cursor cursor = courseDB.queryCourse(null,selections,selectArgs,null,null,null) ;
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
 
-
-
+            cursor.moveToNext();
+        }
+    }
 
 }
 
