@@ -18,8 +18,9 @@
 
         </activity>
         <activity android:name=".XlsSetActivity">
-
         </activity>
+
+        <activity android:name=".TaskActivity"></activity>
     </application>
 
 </manifest>

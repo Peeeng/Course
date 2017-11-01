@@ -26,6 +26,7 @@ import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.CurWeekSet;
 import com.example.j_king.getsetdata.ReadSqlite;
 import com.example.j_king.getsetdata.XlsSetDB;
+import com.example.j_king.navlistener.NavListener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -102,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
         btSet.setOnClickListener(listenerSet);
         selectWeek.setOnItemSelectedListener(listenerSelectWeek);
         gridCourse.setOnItemClickListener(listenerGridCourse);
+        Button btMain = (Button) findViewById(R.id.btMain) ;
+        Button btTask = (Button) findViewById(R.id.btTask) ;
+        btTask.setOnClickListener(new NavListener(MainActivity.this));
+        btMain.setOnClickListener(new NavListener(MainActivity.this));
     }
 
     /**
