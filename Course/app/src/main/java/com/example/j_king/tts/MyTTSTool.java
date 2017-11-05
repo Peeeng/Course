@@ -1,6 +1,5 @@
 package com.example.j_king.tts ;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,28 +12,37 @@ import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.*;
 
-public class MyTTS extends Activity   {
+public class MyTTSTool {
 
-    private static final String TAG = "MyTTS" ;
-    private final Context context;
-    private TextToSpeech mTts ;
+    private static final String TAG = "MyTTSTool" ;
+    private Context context;
+    private static TextToSpeech mTts ;
 
-    public MyTTS(Context context){
-        this.context = context ;
+
+    public MyTTSTool(Context context){
+        this.context = context.getApplicationContext() ;
     }
 
-    public void createTTSObject(){
-        mTts = new TextToSpeech(context, new MyOnInitialListener());
+    public TextToSpeech getInstance()
+    {
+        synchronized(mTts){
+            if (mTts == null) {
+                mTts = new TextToSpeech(context,new MyOnInitialListener());
+            }
+            return mTts;
+        }
+
     }
 
-    public TextToSpeech getTTSInstance(){
-        return mTts ;
-    }
-    public void speakVoice(String text){
-        mTts.speak(text,QUEUE_FLUSH,null,"222") ;
+    public int speakVoice(String text){
+        //返回speak的状态，ERROR、SUCCESS
+        return mTts.speak(text,QUEUE_FLUSH,null,"222") ;
     }
 
-    class MyOnInitialListener implements TextToSpeech.OnInitListener {
+    public void stopTTS(){
+//        mTts.stop();
+    }
+    private class MyOnInitialListener implements TextToSpeech.OnInitListener {
         /**
          *
          * @param status 创建TTS 对象返回的状态
@@ -58,7 +66,6 @@ public class MyTTS extends Activity   {
         }
     }
 
-
     /**
      *  安装TTS 语音服务
      */
@@ -71,16 +78,16 @@ public class MyTTS extends Activity   {
     /**
      * 安装语音相关资源包
      */
-    public void installTTSLang() {
+    private void installTTSLang() {
         AlertDialog.Builder alertInstall = new AlertDialog.Builder(context)
                 .setTitle("缺少语音包")
-                .setMessage("当前语音引擎不支持中文语音，建议使用讯飞语音，前往下载？")
+                .setMessage("当前语音引擎不支持中文语音，建议使用讯飞语音。")
                 .setPositiveButton("去下载",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
-                                // 下载讯飞语音的语音数据包
+                                // 下载讯飞语音引擎
                                 String ttsDataUrl = "http://server.m.pp.cn/download/apk?"+
                                         "query=%E8%AE%AF%E9%A3%9E%E8%AF%AD%E9%9F%B3&ch=smweb&"+
                                         "ch_src=sm&appId=1001787&custom=0&uc_param_str=frvecpeimintnidnut";
@@ -88,6 +95,15 @@ public class MyTTS extends Activity   {
                                 Intent ttsIntent = new Intent(
                                         Intent.ACTION_VIEW, ttsDataUri);
                                 context.startActivity(ttsIntent);
+                            }
+                        })
+                .setNeutralButton("去设置",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                // 设置TTS引擎为讯飞语音
+                                context.startActivity(new Intent("com.android.settings.TTS_SETTINGS"));
                             }
                         })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

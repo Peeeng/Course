@@ -1,6 +1,7 @@
 package com.example.j_king.course;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -20,4 +21,5 @@ public class MyApplication extends Application {
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
     }
+
 }

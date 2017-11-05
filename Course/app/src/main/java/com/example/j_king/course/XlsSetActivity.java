@@ -75,8 +75,6 @@ public class XlsSetActivity extends AppCompatActivity {
         readSqlite = new ReadSqlite(XlsSetActivity.this);
 
         setRequestExternalStronge();
-        ActionBar bar = getSupportActionBar();
-        bar.hide();
         prepareListen();
         initData();
 
@@ -95,7 +93,7 @@ public class XlsSetActivity extends AppCompatActivity {
                 editXlsUrl.setText(xlsName);
             }
 
-            spinnerWeek.setSelection(curWeek);
+            spinnerWeek.setSelection(curWeek-1);
             xlsPath = null ;
         }
         cur.close();
@@ -143,7 +141,7 @@ public class XlsSetActivity extends AppCompatActivity {
                 //返回到上一级（主）窗口
                 Intent intent = new Intent() ;
                 intent.putExtra("xlsPath",xlsPath);
-                curWeek = spinnerWeek.getSelectedItemPosition()  ;
+                curWeek = spinnerWeek.getSelectedItemPosition() + 1  ;
                 updateXlsSetTableContent();
                 intent.putExtra("curWeek",curWeek) ;
                 setResult(CHANGEXLS,intent);
@@ -255,7 +253,7 @@ public class XlsSetActivity extends AppCompatActivity {
     private void updateXlsSetTableContent(){
 
         //修改系统设置表里的路径和周次
-        curWeek = spinnerWeek.getSelectedItemPosition()  ;
+        curWeek = spinnerWeek.getSelectedItemPosition() + 1  ;
         ContentValues contentValues = new ContentValues() ;
         contentValues.put(XlsSetDB.curWeek,curWeek) ;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");

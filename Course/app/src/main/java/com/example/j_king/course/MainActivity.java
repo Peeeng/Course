@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.course);
-        ActionBar bar = getSupportActionBar() ;
-        bar.hide();
 
         readSqlite = new ReadSqlite(this) ;
         prepareListener();
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         }
         cur.close();
         //设置下拉框的值为当前周次
-        selectWeek.setSelection(curWeek);
+        selectWeek.setSelection(curWeek-1);
     }
 
 
@@ -143,11 +141,11 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode){
             case REQUEST_XLSSET_ACTIVITY:
                 if(resultCode == XlsSetActivity.CHANGEXLS){
-                    int position = data.getIntExtra("curWeek",1) ;
+                    int position = data.getIntExtra("curWeek",1) -1;
                     showWeekCourse(position);
                 }
                 else if(resultCode == XlsSetActivity.NOCHANGE){
-                    int position = data.getIntExtra("curWeek",1) ;
+                    int position = data.getIntExtra("curWeek",1) -1;
 
                     showWeekCourse(position);
                 }
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     private void showWeekCourse(int position){
 
         selectWeek.setSelection(position);
-        Integer curWeek = new Integer(position+1) ;
+        Integer curWeek = position+1 ;
         String [] from = new String [] { CourseDB.cName,CourseDB.cTeacher} ;
         int [] to = new int[]{R.id.courseName,R.id.teacherName} ;
         List <Map<String,String>> cNameAndtNameList =  readSqlite.getSelectWeekData(curWeek) ;
@@ -179,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
             cursor.moveToNext();
         }
+        cursor.close();
     }
 
 }

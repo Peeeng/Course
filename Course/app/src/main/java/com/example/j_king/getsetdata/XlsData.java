@@ -66,8 +66,8 @@ public class XlsData {
                 param.put(CourseDB.cName,className) ;
                 param.put(CourseDB.cTeacher,teacherName) ;
                 param.put(CourseDB.cWeeks,splitClassWeeks(classWeeks)) ;
-                //将星期数存入Map，周一到周日对应 0 到 6
-                param.put(CourseDB.cWeekday,columnIndex - 1);
+                //将星期数存入Map，周一到周日对应 1 到 7
+                param.put(CourseDB.cWeekday,columnIndex );
                 //将节次信息存入Map，节次为：1,3,5,7,9，11
                 param.put(CourseDB.cTime,(rowIndex-2)*2 - 1) ;
                 param.put(CourseDB.cAddr,classAddr) ;

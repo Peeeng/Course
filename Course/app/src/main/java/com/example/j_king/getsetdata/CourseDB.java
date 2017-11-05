@@ -12,7 +12,7 @@ import android.util.Log;
  */
 
 public class CourseDB {
-    private CourseDBHelper courseDBHelper;
+    private static CourseDBHelper courseDBHelper;
     private SQLiteDatabase db = null;
 
     public static final String TAG = "DATABASE";
@@ -33,7 +33,14 @@ public class CourseDB {
         db = courseDBHelper.getWritableDatabase() ;
     }
 
-    private class CourseDBHelper extends SQLiteOpenHelper {
+    public static void getInstance(Context context){
+        synchronized(courseDBHelper){
+            if(courseDBHelper == null)
+                courseDBHelper = new CourseDBHelper(context) ;
+        }
+    }
+
+    private static class CourseDBHelper extends SQLiteOpenHelper {
 
         private CourseDBHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
