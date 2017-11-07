@@ -21,8 +21,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent(context, TaskServices.class);
-        context.startService(i);
+        Intent taskServicesIntent = new Intent(context, TaskServices.class);
+/*
+        taskServicesIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) ;
+        taskServicesIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+*/
+
+        context.startService(taskServicesIntent);
         Log.e(TAG, "onStartCommand: "+"接收到AlarmService的任务" );
 
     }

@@ -28,16 +28,15 @@ public class CourseDB {
     public static final String cTime = "cTime";
     public static final String cAddr = "cAddr";
 
-    public CourseDB(Context context ){
-        courseDBHelper = new CourseDBHelper(context);
+    public CourseDB(Context context){
+        courseDBHelper = getInstance(context) ;
         db = courseDBHelper.getWritableDatabase() ;
     }
 
-    public static void getInstance(Context context){
-        synchronized(courseDBHelper){
-            if(courseDBHelper == null)
-                courseDBHelper = new CourseDBHelper(context) ;
-        }
+    private static synchronized CourseDBHelper getInstance(Context context){
+        if(courseDBHelper == null)
+            courseDBHelper = new CourseDBHelper(context) ;
+        return courseDBHelper ;
     }
 
     private static class CourseDBHelper extends SQLiteOpenHelper {

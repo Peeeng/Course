@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -12,36 +13,34 @@ import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.*;
 
-public class MyTTSTool {
+public class MyTTSCheck {
 
-    private static final String TAG = "MyTTSTool" ;
-    private Context context;
-    private static TextToSpeech mTts ;
+    private final String TAG = "MyTTSCheck" ;
+    private Context contextAct ;
+    private TextToSpeech mTts ;
 
-
-    public MyTTSTool(Context context){
-        this.context = context.getApplicationContext() ;
+    public MyTTSCheck(Context contextAct){
+        this.contextAct = contextAct ;
+        mTts = new TextToSpeech(contextAct,new MyOnInitialListener());
     }
 
-    public TextToSpeech getInstance()
-    {
-        synchronized(mTts){
-            if (mTts == null) {
-                mTts = new TextToSpeech(context,new MyOnInitialListener());
-            }
-            return mTts;
-        }
-
-    }
 
     public int speakVoice(String text){
         //返回speak的状态，ERROR、SUCCESS
-        return mTts.speak(text,QUEUE_FLUSH,null,"222") ;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            return mTts.speak(text,QUEUE_FLUSH,null,"222") ;
+        else
+            return mTts.speak(text,QUEUE_FLUSH,null) ;
     }
 
     public void stopTTS(){
-//        mTts.stop();
+        while(mTts.isSpeaking()){
+            ;
+        }
+        mTts.stop();
+        mTts.shutdown();
     }
+
     private class MyOnInitialListener implements TextToSpeech.OnInitListener {
         /**
          *
@@ -57,7 +56,7 @@ public class MyTTSTool {
                 if(result == LANG_MISSING_DATA || result == LANG_NOT_SUPPORTED) {
                     //下载语音包
                     Log.v(TAG, "Language is not available");
-                    installTTSLang();
+                    installTTSLang(contextAct);
                 }
                 else {
                     Log.v(TAG, "TTS is available");
@@ -72,14 +71,14 @@ public class MyTTSTool {
     public void installTTSData(){
         Intent dataIntent = new Intent();
         dataIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-        context.startActivity(dataIntent);
+        contextAct.startActivity(dataIntent);
     }
 
     /**
      * 安装语音相关资源包
      */
-    private void installTTSLang() {
-        AlertDialog.Builder alertInstall = new AlertDialog.Builder(context)
+    private void installTTSLang(final Context contextAct) {
+        AlertDialog.Builder alertInstall = new AlertDialog.Builder(contextAct)
                 .setTitle("缺少语音包")
                 .setMessage("当前语音引擎不支持中文语音，建议使用讯飞语音。")
                 .setPositiveButton("去下载",
@@ -94,7 +93,7 @@ public class MyTTSTool {
                                 Uri ttsDataUri = Uri.parse(ttsDataUrl);
                                 Intent ttsIntent = new Intent(
                                         Intent.ACTION_VIEW, ttsDataUri);
-                                context.startActivity(ttsIntent);
+                                contextAct.startActivity(ttsIntent);
                             }
                         })
                 .setNeutralButton("去设置",
@@ -103,7 +102,7 @@ public class MyTTSTool {
                             public void onClick(DialogInterface dialog,
                                                 int which) {
                                 // 设置TTS引擎为讯飞语音
-                                context.startActivity(new Intent("com.android.settings.TTS_SETTINGS"));
+                                contextAct.startActivity(new Intent("com.android.settings.TTS_SETTINGS"));
                             }
                         })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

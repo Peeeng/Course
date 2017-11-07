@@ -45,7 +45,6 @@ public class LineGridView extends GridView {
         localPaint.setStyle(Paint.Style.STROKE); //画笔实心
         localPaint.setColor(getContext().getResources().getColor(R.color.grid_line));//画笔颜色
 
-
         localPaint.setStrokeWidth(1);
         if(total == 0)
             return ;
@@ -63,19 +62,20 @@ public class LineGridView extends GridView {
         }
 
 
+        RectF rect = new RectF();
+        int padding = 6 ;
+        float round =10f ;
+        Paint rectPaint = new Paint();
+        TypedArray colors = getResources().obtainTypedArray(R.array.itemColors);
+        View view ;
+        TextView courseName;
+
         for(int j = 0 ;j < colnum ; j++){
-            Paint rectPaint = new Paint();
-            TypedArray colors = getResources().obtainTypedArray(R.array.itemColors);
-
             rectPaint.setColor(colors.getColor(j,0));
-
             for(int i = 0 ; i < rownum ; i++){
-                View view = getChildAt(i * colnum + j) ;
-                TextView courseName = (TextView) view.findViewById(R.id.courseName);
+                view = getChildAt(i * colnum + j) ;
+                courseName = (TextView) view.findViewById(R.id.courseName);
                 if(courseName.getText() != null && !courseName.getText().equals("")){
-                    RectF rect = new RectF();
-                    int padding = 6 ;
-                    float round =10f ;
                     rect.set(view.getLeft()+padding,view.getTop()+padding,view.getRight()-padding,view.getBottom()-padding);
                     canvas.drawRoundRect(rect,round,round,rectPaint);
                 }

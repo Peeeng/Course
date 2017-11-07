@@ -13,8 +13,8 @@ import android.util.Log;
 
 public class XlsSetDB {
     public static final String DB_TABLE = "xlsset" ;
-    public static final int DB_VERSION = 1 ;
-    public static final String TAG = "XlsSetDB" ;
+    private static final int DB_VERSION = 1 ;
+    public final String TAG = "XlsSetDB" ;
 
     //xlsset表的主键，id
     public static final String xlsSetId = "xlsSetId";
@@ -23,16 +23,21 @@ public class XlsSetDB {
     public static final String startDate = "startDate" ;
 
     public static final String defaultId = "XlsUniqueueId";
-    private XlsSetDBHelper xlsSetDBHelper  ;
+    private static XlsSetDBHelper xlsSetDBHelper  ;
     private SQLiteDatabase db ;
 
     public XlsSetDB(Context context){
-        xlsSetDBHelper = new XlsSetDBHelper(context) ;
-        db = xlsSetDBHelper.getReadableDatabase() ;
+        db = getInstance(context).getWritableDatabase() ;
 
     }
 
-    private class XlsSetDBHelper extends SQLiteOpenHelper {
+    private static synchronized XlsSetDBHelper getInstance(Context context){
+        if(xlsSetDBHelper == null)
+            xlsSetDBHelper = new XlsSetDBHelper(context) ;
+        return xlsSetDBHelper ;
+    }
+
+    private static class XlsSetDBHelper extends SQLiteOpenHelper {
 
         private XlsSetDBHelper(Context context) {
             super(context, DB_TABLE, null, DB_VERSION);
@@ -48,7 +53,7 @@ public class XlsSetDB {
                     startDate + " varchar(50) " +
                     ")";
             db.execSQL(sql);
-            Log.i(TAG, "onCreate: "+DB_TABLE+"表创建成功");
+            Log.i("XlsSetDBHelper", "onCreate: "+DB_TABLE+"表创建成功");
         }
 
         @Override

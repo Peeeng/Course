@@ -1,23 +1,30 @@
 package com.example.j_king.task;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.j_king.course.R;
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.CurWeekSet;
 import com.example.j_king.getsetdata.XlsSetDB;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,12 +41,23 @@ import java.util.Map;
  * @time 2017/11/1 17:57
  */
 public class TaskServices extends Service {
-    private static final String TAG = "TaskServices" ;
-    private static CourseDB courseDB ;
-    private static int voicedTimes ;
-    private List<Map<String,Object>> curDayCourse ;
-    private Map<String,Object> curVoiceCourse ;
+    private static final String TAG = "TaskServices";
+    private static CourseDB courseDB;
 
+    //已经呼叫的次数
+    private int voicedTimes;
+    private List<Map<String, Object>> curDayCourse;
+    private Map<String, Object> curVoiceCourse;
+
+    private Notification taskNotification ;
+    private Bitmap largeIcon ;
+    private int smallIcon ;
+
+    private int addDay ;
+    private int curDay ;
+    private int curWeek ;
+
+    private long deliveryTime ;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -47,157 +65,223 @@ public class TaskServices extends Service {
     }
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
-        courseDB = new CourseDB(this) ;
-        //已经呼叫的次数
-        voicedTimes = 0 ;
+        //course表数据库操作对象
+        courseDB = new CourseDB(this);
+
+        voicedTimes = 0;
+        getCurDayAndWeek();
+        //设置超时提醒时间
+        deliveryTime = 5 * 60 * 1000 ;
         //当天的课程信息
-        curDayCourse = getCourse();
-        Log.e(TAG, "onCreate: 启动" );
+        curDayCourse = getOneDayCourse(curWeek, curDay);
+
+        //获取小图标
+        smallIcon = R.drawable.course ;
+        //获取大图标
+        largeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.course) ;
+
+
+
+        Log.e(TAG, "onCreate: 首次启动TaskServices");
 
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        startCourseServices(intent);
 
+        super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
+    }
+
+    private void startCourseServices(Intent intent) {
+        final int lastSpeakStatus ;
+        if(intent != null)
+            lastSpeakStatus = intent.getIntExtra("speakStatus", 0);
+        else
+            lastSpeakStatus = 0 ;
+        Log.e(TAG, "onStartCommand: 开始TaskServices任务,上一次的呼叫状态：" + lastSpeakStatus);
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                long triggerAtTime = getNextVoiceTime() ;
-                if(triggerAtTime == -1){
+                long triggerAtTime = getNextVoiceTime(lastSpeakStatus);
+                Log.e(TAG, "run: 执行下一次呼叫的时间：" + new Date(triggerAtTime));
+                if (triggerAtTime == -1) {
                     stopSelf();
                     return;
                 }
                 Intent broadcastIntent = new Intent(TaskServices.this, TaskReceiver.class);
-                //设置数据--课程名，地点
-                Bundle bundle = new Bundle() ;
-                bundle.putString(CourseDB.cName,curVoiceCourse.get(CourseDB.cName).toString());
-                bundle.putString(CourseDB.cAddr,curVoiceCourse.get(CourseDB.cAddr).toString());
-                broadcastIntent.putExtras(bundle) ;
+                //设置数据--播报的字符串：课程名，地点
+//                Bundle bundle = new Bundle();
+                String cName = curVoiceCourse.get(CourseDB.cName).toString();
+                String cAddr = curVoiceCourse.get(CourseDB.cAddr).toString();
+                String voiceText = "下一节课是在" + cAddr + "的" + cName;
+//                bundle.putString("voiceText", voiceText);
+                Log.e(TAG, "run:voiceText: "+voiceText );
+                broadcastIntent.putExtra("voiceText",voiceText);
 
-                PendingIntent pi = PendingIntent.getBroadcast(TaskServices.this, 0, broadcastIntent, 0);
+                Log.e(TAG, "run:broadcastIntent: "+broadcastIntent.getStringExtra("voiceText") );
+                SimpleDateFormat timeFormat = new SimpleDateFormat("EEEE  HH:mm");
+                String time = timeFormat.format(new Date(triggerAtTime));
+                // 参数一：唯一的通知标识；参数二：通知消息。
+                startForeground(110, (Notification) sendNotification(cName, cAddr, time));// 开始前台服务
+
+                PendingIntent pi = PendingIntent.getBroadcast(TaskServices.this, 0, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                 //获取系统alarm服务
                 AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 //定时启动services
-                manager.setExact(AlarmManager.RTC_WAKEUP, triggerAtTime, pi);
+                manager.setExact(AlarmManager.RTC_WAKEUP, triggerAtTime - 15 * 60 * 1000, pi);
                 //将已呼叫的次数增1
-                ++voicedTimes ;
+                ++voicedTimes;
             }
         }).start();
-        super.onStartCommand(intent, flags, startId);
-        return START_STICKY ;
+
     }
 
+
     /**
-     *
      * @return 返回下一个呼叫的时间，若没有，则返回-1
      */
-    public long getNextVoiceTime(){
+    public long getNextVoiceTime(int lastSpeakStatus) {
+        if(lastSpeakStatus == -1 )
+            voicedTimes -- ;
+
+        Date triggerDate = transCourseTimeToDateTime(voicedTimes) ;
         //如果下个呼叫的时间为null，则结束services
-        if(transCourseTimeToDateTime(voicedTimes) == null){
+        if (triggerDate == null)
             return -1;
-        }
         //获取系统当前时间
         long curTime = System.currentTimeMillis();
         //获取下一个需要呼叫的时间
-        long triggerAtTime = transCourseTimeToDateTime(voicedTimes).getTime() ;
+        long triggerTime = triggerDate.getTime();
         //设置可接受的呼叫延时时间
-        long deliveryTime = 5*60*1000 ;
-        //如果当前时间大于当前需要通知课程时间与允许延时时间之和的话，那么跳过此课程,叫下一个课程
-        while(curTime > triggerAtTime + deliveryTime){
-            if( ++voicedTimes >= curDayCourse.size()) {
-                return -1;
-            }
-            Log.e(TAG, "run: "+"curtime="+curTime+" triggerTime = "+triggerAtTime + "  voice="+voicedTimes);
-            triggerAtTime = transCourseTimeToDateTime(voicedTimes).getTime() ;
+
+        //如果当前时间大于当前需要通知课程时间与允许延时时间之和的话，那么跳过此课程,获取下一个课程的时间
+        while (curTime > triggerTime + deliveryTime) {
+            triggerTime = transCourseTimeToDateTime(++voicedTimes).getTime();
+            Log.e(TAG, "getNextVoiceTime: " + "curtime=" + new Date(curTime) + " triggerTime = " + new Date(triggerTime) + "  voice=" + voicedTimes);
         }
-        return triggerAtTime ;
+        return triggerTime;
     }
 
     /**
      * @return 返回下一个需要通知的课程时间:具体时间，如果没有要呼叫的下一个课程，则返回null
      */
-    public Date transCourseTimeToDateTime(int index){
-        curVoiceCourse = getNextCourse(index) ;
-        if(curVoiceCourse == null)
-            return null ;
+    public Date transCourseTimeToDateTime(int index) {
+        curVoiceCourse = getNextCourse(index);
+        if (curVoiceCourse == null)
+            return null;
         //设置时间为当前年月日
-        Calendar calendar = Calendar.getInstance() ;
+        Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int hours = 0 ,minutes = 0 ;
+        int hour = 0, minute = 0, seconds = 0;
 
         //获取课程节次，转换为具体的时间
-        int cTime = (int)curVoiceCourse.get(CourseDB.cTime) ;
-        switch (cTime){
-            case 1: hours = 7 ;minutes = 30 ;break;
-            case 3: hours = 9 ;minutes = 42 ;break ;
-            case 5: hours = 13 ;minutes = 15 ;break ;
-            case 7: hours = 15 ;minutes = 12 ;break ;
-            default:hours = 0 ;minutes = 0 ;
+        int cTime = (int) curVoiceCourse.get(CourseDB.cTime);
+        switch (cTime) {
+            case 1:hour = 8;minute = 0;break;
+            case 3:hour = 10;minute = 0;break;
+            case 5:hour = 13;minute = 30;break;
+            case 7:hour = 15;minute = 30;break;
+            case 9:hour = 19;minute = 0;break;
+            case 11:hour = 21;minute = 0;break;
+            default:hour = 0;minute = 0;
         }
-        calendar.set(year,month,day,hours,minutes);
+        calendar.set(Calendar.HOUR_OF_DAY,hour) ;
+        calendar.set(Calendar.MINUTE,minute);
+        calendar.set(Calendar.SECOND,0) ;
+        calendar.add(Calendar.DAY_OF_MONTH,addDay);
         return calendar.getTime();
     }
 
     /**
-     *
-     * @return 返回当天下一个需要通知的课程信息
+     * @return 返回某一天下一个需要通知的课程信息
      */
-    private Map<String,Object> getNextCourse(int index){
-        if(index >= curDayCourse.size()){
-            //如果当天的课程信息都被呼叫完，返回空
-            return null ;
+    private Map<String, Object> getNextCourse(int index) {
+        addDay = 0 ;
+        while (index >= curDayCourse.size()) {
+            //如果当天的课程信息都被呼叫完，获取第二天的课程并返回
+            ++ addDay ;
+            //重新计算周次和星期
+            curWeek += (curDay + addDay - 1) / 7 ;
+            curDay = (curDay + addDay - 1) % 7 + 1 ;
+            if(curWeek >= 20){
+                curDayCourse = null ;
+                return null ;
+            }
+
+            curDayCourse = getOneDayCourse(curWeek , curDay) ;
+            index = voicedTimes = 0 ;
         }
-        return curDayCourse.get(index) ;
+        return curDayCourse.get(index);
     }
 
 
     /**
-     * 获取课程信息
+     *
+     * @return 获取当天的星期和周次
      */
-    public List<Map<String, Object>> getCourse(){
+    public void getCurDayAndWeek() {
         //获取当前周次
-        CurWeekSet curWeekSet = new CurWeekSet(this) ;
-        Integer curWeek = curWeekSet.getNewCurWeek();
+        CurWeekSet curWeekSet = new CurWeekSet(this);
+        curWeek = curWeekSet.getNewCurWeek();
+
         //获取当前星期
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        Log.e(TAG, "getCourse: "+ calendar.get(Calendar.DAY_OF_WEEK)) ;
-        Integer curDay = (calendar.get(Calendar.DAY_OF_WEEK) + 5 )%7 + 1;
-
-        List<Map<String, Object>> tmpCourse = getCurDayCourse(curWeek,curDay);
-        return tmpCourse ;
+        curDay = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7 + 1;
     }
 
     /**
-     * 获取当天的课程信息
-     * @param curWeek
-     * @param curDay
+     * 获取某一周某星期几的课程信息
+     *
+     * @param week
+     * @param day
      */
-    private List<Map<String, Object>> getCurDayCourse(Integer curWeek , Integer curDay){
-        Cursor cursor = courseDB.queryCourse(new String []{CourseDB.cName,CourseDB.cAddr,CourseDB.cTime,CourseDB.cWeekday},
-                CourseDB.cWeeks + "=? and "+ CourseDB.cWeekday + "=?",
-                new String []{ curWeek.toString() , curDay.toString() },
-                null,null,null);
-        if(cursor.getCount() > 0 ){
-            List<Map<String, Object>> tmpCourse = new ArrayList<>() ;
+    private List<Map<String, Object>> getOneDayCourse(Integer week, Integer day) {
+        Cursor cursor = courseDB.queryCourse(new String[]{CourseDB.cName, CourseDB.cAddr, CourseDB.cTime, CourseDB.cWeekday},
+                CourseDB.cWeeks + "=? and " + CourseDB.cWeekday + "=?",
+                new String[]{week.toString(), day.toString()},
+                null, null, null);
+        if (cursor.getCount() > 0) {
+            List<Map<String, Object>> tmpCourse = new ArrayList<>();
             cursor.moveToFirst();
-            do{
-                Map<String,Object> tmp = new HashMap<>() ;
-                tmp.put(CourseDB.cTime,cursor.getInt(cursor.getColumnIndex(CourseDB.cTime))) ;
-                tmp.put(CourseDB.cName,cursor.getString(cursor.getColumnIndex(CourseDB.cName))) ;
-                tmp.put(CourseDB.cAddr,cursor.getString(cursor.getColumnIndex(CourseDB.cAddr))) ;
-                tmp.put(CourseDB.cWeekday,cursor.getInt(cursor.getColumnIndex(CourseDB.cWeekday))) ;
+            do {
+                Map<String, Object> tmp = new HashMap<>();
+                tmp.put(CourseDB.cTime, cursor.getInt(cursor.getColumnIndex(CourseDB.cTime)));
+                tmp.put(CourseDB.cName, cursor.getString(cursor.getColumnIndex(CourseDB.cName)));
+                tmp.put(CourseDB.cAddr, cursor.getString(cursor.getColumnIndex(CourseDB.cAddr)));
+                tmp.put(CourseDB.cWeekday, cursor.getInt(cursor.getColumnIndex(CourseDB.cWeekday)));
                 tmpCourse.add(tmp);
-            }while(cursor.moveToNext());
-            return tmpCourse ;
+            } while (cursor.moveToNext());
+            cursor.close();
+            return tmpCourse;
         }
         return null;
     }
 
 
+    private Notification sendNotification(String cName, String cAddr, String time) {
+        //获取NotificationManager实例
+        //实例化NotificationCompat.Builde并设置相关属性
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext())
+                //设置小图标
+                .setSmallIcon(smallIcon)
+                .setLargeIcon(largeIcon)
+                //设置通知标题
+                .setContentTitle(cName)
+                //设置通知内容
+                .setContentText("地点:" + cAddr + "  时间:" + time);
+        //设置通知时间，默认为系统发出通知的时间，通常不用设置
+        //.setWhen(System.currentTimeMillis());
+        //通过builder.build()方法生成Notification对象,并发送通知,id=1
+        taskNotification = builder.build(); // 获取构建好的Notification
+        taskNotification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
+        return taskNotification;
+    }
 }

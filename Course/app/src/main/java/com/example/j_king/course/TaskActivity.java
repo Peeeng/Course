@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 
 import com.example.j_king.task.AlarmService;
-import com.example.j_king.tts.MyTTSTool;
+import com.example.j_king.tts.MyTTSCheck;
 
 import org.w3c.dom.Text;
 
@@ -25,28 +25,69 @@ public class TaskActivity extends AppCompatActivity   {
     private static final String TAG = "TTS Demo" ;
     private static final Integer MY_DATA_CHECK_CODE = 0x0011;
     private Switch switchTask ;
-    private MyTTSTool myTTSTool ;
+    private MyTTSCheck myTTSCheck;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
 
-        myTTSTool = new MyTTSTool(getApplicationContext()) ;
+        Log.e(TAG, "onCreate: " );
+
 
         switchTask  = (Switch) findViewById(R.id.switchTask) ;
         prepareListen();
 
     }
 
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.e(TAG, "onRestart: " );
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.e(TAG, "onStart: " );
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "onResume");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(TAG, "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG, "onStop");
+    }
+
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if(myTTSCheck != null)
+            myTTSCheck.stopTTS();
+        Log.e(TAG, "onDestroy: " );
+    }
+
+
     private void prepareListen(){
         Button test = (Button) findViewById(R.id.test) ;
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(myTTSTool.getInstance() != null)
-                    myTTSTool.speakVoice("已启动课程任务。");
-                Intent alarmServices = new Intent(TaskActivity.this,AlarmService.class) ;
+                if(myTTSCheck != null){
+                    myTTSCheck.speakVoice("已启动课程任务。");
+                    myTTSCheck.stopTTS();
+                }
+                Intent alarmServices = new Intent(TaskActivity.this.getApplicationContext(),AlarmService.class) ;
                 startService(alarmServices);
             }
         });
@@ -73,6 +114,7 @@ public class TaskActivity extends AppCompatActivity   {
                 case TextToSpeech.Engine.CHECK_VOICE_DATA_PASS:
                     //这个返回结果表明TTS Engine可以用
                     Log.i(TAG, "TTS Engine is enabled!");
+                    myTTSCheck = new MyTTSCheck(this) ;
 /*                    TextToSpeech tts = myTTSTool.getInstance() ;
                     int checkLanguage = tts.isLanguageAvailable(Locale.CHINA) ;
                     if(checkLanguage != TextToSpeech.LANG_MISSING_DATA && checkLanguage != TextToSpeech.LANG_NOT_SUPPORTED)
@@ -83,7 +125,7 @@ public class TaskActivity extends AppCompatActivity   {
                     //这情况表明数据有错,重新下载安装需要的数据
                     Log.e(TAG, "TTS Engine is disabled!");
                     Toast.makeText(TaskActivity.this,"TTS引擎不可用",Toast.LENGTH_LONG).show() ;
-                    myTTSTool.installTTSData();
+                    myTTSCheck.installTTSData();
                     break ;
                 default:
                     Log.e(TAG, "It's occur ERROR when check TTS engine");

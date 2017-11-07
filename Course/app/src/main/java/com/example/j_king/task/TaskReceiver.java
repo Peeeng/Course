@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.j_king.getsetdata.CourseDB;
 
@@ -21,11 +22,9 @@ import com.example.j_king.getsetdata.CourseDB;
 public class TaskReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        Bundle cNameAndAddr = intent.getExtras();
-
         Intent i = new Intent(context, CourseServices.class);
-        i.putExtras(cNameAndAddr) ;
+        Log.e("TaskReceiver", "onReceive: voiceText "+intent.getStringExtra("voiceText") );
+        i.putExtra("voiceText",intent.getStringExtra("voiceText")) ;
         context.startService(i);
     }
 }

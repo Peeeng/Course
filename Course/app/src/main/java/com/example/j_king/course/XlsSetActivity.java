@@ -204,9 +204,8 @@ public class XlsSetActivity extends AppCompatActivity {
                         data = cursor.getString( index );
                     }
                 }
-
+                cursor.close();
             }
-            cursor.close();
         }
         return data;
     }
@@ -218,7 +217,6 @@ public class XlsSetActivity extends AppCompatActivity {
             int writeStoragePermission = XlsSetActivity.this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (writeStoragePermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(XlsSetActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STRONGE);
-                return;
             }
         }
     }
