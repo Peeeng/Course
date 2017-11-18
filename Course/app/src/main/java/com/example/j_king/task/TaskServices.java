@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,15 +50,13 @@ public class TaskServices extends Service {
     private List<Map<String, Object>> curDayCourse;
     private Map<String, Object> curVoiceCourse;
 
-    private Notification taskNotification ;
-    private Bitmap largeIcon ;
-    private int smallIcon ;
+    private Bitmap largeIcon;
+    private int smallIcon;
 
-    private int addDay ;
-    private int curDay ;
-    private int curWeek ;
+    private int addDay, curDay, curWeek;
 
-    private long deliveryTime ;
+    private long deliveryTime;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -73,71 +72,70 @@ public class TaskServices extends Service {
         voicedTimes = 0;
         getCurDayAndWeek();
         //设置超时提醒时间
-        deliveryTime = 5 * 60 * 1000 ;
-        //当天的课程信息
         curDayCourse = getOneDayCourse(curWeek, curDay);
 
         //获取小图标
-        smallIcon = R.drawable.course ;
+        smallIcon = R.drawable.course;
         //获取大图标
-        largeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.course) ;
-
-
+        largeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.course);
 
         Log.e(TAG, "onCreate: 首次启动TaskServices");
 
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        startCourseServices(intent);
+    public int onStartCommand(final Intent intent, int flags, int startId) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                startCourseServices(intent);
+
+            }
+        }).start();
 
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
 
     private void startCourseServices(Intent intent) {
-        final int lastSpeakStatus ;
-        if(intent != null)
+        int lastSpeakStatus;
+        if (intent != null)
             lastSpeakStatus = intent.getIntExtra("speakStatus", 0);
         else
-            lastSpeakStatus = 0 ;
+            lastSpeakStatus = 0;
         Log.e(TAG, "onStartCommand: 开始TaskServices任务,上一次的呼叫状态：" + lastSpeakStatus);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
 
-                long triggerAtTime = getNextVoiceTime(lastSpeakStatus);
-                Log.e(TAG, "run: 执行下一次呼叫的时间：" + new Date(triggerAtTime));
-                if (triggerAtTime == -1) {
-                    stopSelf();
-                    return;
-                }
-                Intent broadcastIntent = new Intent(TaskServices.this, TaskReceiver.class);
-                //设置数据--播报的字符串：课程名，地点
-//                Bundle bundle = new Bundle();
-                String cName = curVoiceCourse.get(CourseDB.cName).toString();
-                String cAddr = curVoiceCourse.get(CourseDB.cAddr).toString();
-                String voiceText = "下一节课是在" + cAddr + "的" + cName;
-//                bundle.putString("voiceText", voiceText);
-                Log.e(TAG, "run:voiceText: "+voiceText );
-                broadcastIntent.putExtra("voiceText",voiceText);
+        long triggerAtTime = getNextVoiceTime(lastSpeakStatus);
+        if (triggerAtTime == -1) {
+            stopSelf();
+            return;
+        }
+        Intent broadcastIntent = new Intent(TaskServices.this, TaskReceiver.class);
+        //设置数据--播报的字符串：课程名，地点
+        String cName = curVoiceCourse.get(CourseDB.cName).toString();
+        String cAddr = curVoiceCourse.get(CourseDB.cAddr).toString();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("EEEE  HH:mm");
+        String cTime = timeFormat.format(new Date(triggerAtTime));
 
-                Log.e(TAG, "run:broadcastIntent: "+broadcastIntent.getStringExtra("voiceText") );
-                SimpleDateFormat timeFormat = new SimpleDateFormat("EEEE  HH:mm");
-                String time = timeFormat.format(new Date(triggerAtTime));
-                // 参数一：唯一的通知标识；参数二：通知消息。
-                startForeground(110, (Notification) sendNotification(cName, cAddr, time));// 开始前台服务
+        Bundle bundle = new Bundle() ;
+        bundle.putString(CourseDB.cName,cName);
+        bundle.putString(CourseDB.cAddr,cAddr);
+        bundle.putString(CourseDB.cTime,cTime);
+        bundle.putLong("triggerAtTime",triggerAtTime);
+        broadcastIntent.putExtras(bundle);
 
-                PendingIntent pi = PendingIntent.getBroadcast(TaskServices.this, 0, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                //获取系统alarm服务
-                AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                //定时启动services
-                manager.setExact(AlarmManager.RTC_WAKEUP, triggerAtTime - 15 * 60 * 1000, pi);
-                //将已呼叫的次数增1
-                ++voicedTimes;
-            }
-        }).start();
+        Log.e(TAG, "run: 执行下一次呼叫的时间：" + cTime);
+
+        startForeground(110,(Notification)sendNotification(cName,cAddr,cTime));// 开始前台服务
+
+        PendingIntent pi = PendingIntent.getBroadcast(TaskServices.this, 0, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        //获取系统alarm服务
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        //让系统定时发送pi指定的广播：启动TaskReceiver
+        manager.setExact(AlarmManager.RTC_WAKEUP, triggerAtTime - 15 * 60 * 1000, pi);
+        //将已呼叫的次数增1
+        ++voicedTimes;
 
     }
 
@@ -146,10 +144,12 @@ public class TaskServices extends Service {
      * @return 返回下一个呼叫的时间，若没有，则返回-1
      */
     public long getNextVoiceTime(int lastSpeakStatus) {
-        if(lastSpeakStatus == -1 )
-            voicedTimes -- ;
+        if (lastSpeakStatus == -1) {
+            if (--voicedTimes < 0)
+                voicedTimes = 0;
+        }
 
-        Date triggerDate = transCourseTimeToDateTime(voicedTimes) ;
+        Date triggerDate = transCourseTimeToDateTime(voicedTimes);
         //如果下个呼叫的时间为null，则结束services
         if (triggerDate == null)
             return -1;
@@ -184,18 +184,43 @@ public class TaskServices extends Service {
         //获取课程节次，转换为具体的时间
         int cTime = (int) curVoiceCourse.get(CourseDB.cTime);
         switch (cTime) {
-            case 1:hour = 8;minute = 0;break;
-            case 3:hour = 10;minute = 0;break;
-            case 5:hour = 13;minute = 30;break;
-            case 7:hour = 15;minute = 30;break;
-            case 9:hour = 19;minute = 0;break;
-            case 11:hour = 21;minute = 0;break;
-            default:hour = 0;minute = 0;
+            case 1:
+                hour = 8;
+                minute = 0;
+                break;
+            case 3:
+                hour = 10;
+                minute = 0;
+                break;
+            case 5:
+                hour = 13;
+                minute = 30;
+                break;
+            case 7:
+                hour = 15;
+                minute = 30;
+                break;
+            case 9:
+                hour = 19;
+                minute = 0;
+                break;
+            case 11:
+                hour = 21;
+                minute = 0;
+                break;
+
+/*            case 1:hour = 8;minute = 0;break;
+            case 3:hour = 8;minute = 1;break;
+            case 5:hour = 8;minute = 2;break;
+            case 7:hour = 8;minute = 4;break;
+            case 9:hour = 8;minute = 8;break;
+            case 11:hour = 8;minute = 10;break;
+            default:hour = 0;minute = 0;*/
         }
-        calendar.set(Calendar.HOUR_OF_DAY,hour) ;
-        calendar.set(Calendar.MINUTE,minute);
-        calendar.set(Calendar.SECOND,0) ;
-        calendar.add(Calendar.DAY_OF_MONTH,addDay);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.add(Calendar.DAY_OF_MONTH, addDay);
         return calendar.getTime();
     }
 
@@ -203,27 +228,26 @@ public class TaskServices extends Service {
      * @return 返回某一天下一个需要通知的课程信息
      */
     private Map<String, Object> getNextCourse(int index) {
-        addDay = 0 ;
+        addDay = 0;
         while (index >= curDayCourse.size()) {
             //如果当天的课程信息都被呼叫完，获取第二天的课程并返回
-            ++ addDay ;
+            ++addDay;
             //重新计算周次和星期
-            curWeek += (curDay + addDay - 1) / 7 ;
-            curDay = (curDay + addDay - 1) % 7 + 1 ;
-            if(curWeek >= 20){
-                curDayCourse = null ;
-                return null ;
+            curWeek += (curDay + addDay - 1) / 7;
+            curDay = (curDay + addDay - 1) % 7 + 1;
+            if (curWeek >= 20) {
+                curDayCourse = null;
+                return null;
             }
 
-            curDayCourse = getOneDayCourse(curWeek , curDay) ;
-            index = voicedTimes = 0 ;
+            curDayCourse = getOneDayCourse(curWeek, curDay);
+            index = voicedTimes = 0;
         }
         return curDayCourse.get(index);
     }
 
 
     /**
-     *
      * @return 获取当天的星期和周次
      */
     public void getCurDayAndWeek() {
@@ -265,8 +289,8 @@ public class TaskServices extends Service {
         return null;
     }
 
-
-    private Notification sendNotification(String cName, String cAddr, String time) {
+    public Notification sendNotification(String cName, String cAddr, String time) {
+        Notification taskNotification;
         //获取NotificationManager实例
         //实例化NotificationCompat.Builde并设置相关属性
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext())
@@ -275,6 +299,7 @@ public class TaskServices extends Service {
                 .setLargeIcon(largeIcon)
                 //设置通知标题
                 .setContentTitle(cName)
+                .setTicker(cName)
                 //设置通知内容
                 .setContentText("地点:" + cAddr + "  时间:" + time);
         //设置通知时间，默认为系统发出通知的时间，通常不用设置
@@ -284,4 +309,6 @@ public class TaskServices extends Service {
         taskNotification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
         return taskNotification;
     }
+
+
 }

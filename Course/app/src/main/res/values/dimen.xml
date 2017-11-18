@@ -29,11 +29,18 @@
     <dimen name="btokWidth">300dp</dimen>
 
     <!--导航按钮栏高度-->
-    <dimen name="navBtHeight">70dp</dimen>
+    <dimen name="navBtHeight">60dp</dimen>
+    <dimen name="navBtMarginLeft">5dp</dimen>
+    <dimen name="navBtMarginRight">5dp</dimen>
+
 
     <!--课程内容的高度-->
     <dimen name="gridItemHeight">90dp</dimen>
 
     <!--课程内容内边距-->
     <dimen name="courseItemPadding">2dp</dimen>
+
+    <!--任务页面-->
+    <dimen name="taskFontSize">18dp</dimen>
+
 </resources>

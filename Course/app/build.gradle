@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+   signingConfigs {
+        config {
+            keyAlias 'courseKey'
+            keyPassword 'Pengjian??'
+            storeFile file('E:/150462/AndroidKey/first.jks')
+            storePassword 'Pengjian??'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -10,12 +18,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+    productFlavors {
     }
 }
 
@@ -29,7 +44,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/jxl.jar')
     compile files('libs/poi-3.10-FINAL-20140208.jar')
-    compile 'com.facebook.stetho:stetho:1.5.0'
-    compile 'com.facebook.stetho:stetho-urlconnection:1.2.0'
-    compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    /*    compile 'com.facebook.stetho:stetho:1.5.0'
+        compile 'com.facebook.stetho:stetho-urlconnection:1.2.0'
+        compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'*/
 }

@@ -12,14 +12,44 @@
         android:layout_height="@dimen/actionBarHeight"
         android:background="@color/myActionBar">
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="@string/app_name"
             android:layout_marginLeft="@dimen/actionBarMargin"
-            android:textSize="@dimen/actionFontSize" />
+            android:textSize="@dimen/actionFontSize"
+            />
 
+
+    </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="课前语音播报"
+            android:textAlignment="textStart"
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:textSize="@dimen/taskFontSize"
+            android:layout_weight="1" />
+        <Switch
+            android:id="@+id/switchOpenTTS"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:checked="false"
+            />
 
     </LinearLayout>
 
@@ -31,24 +61,83 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="课前任务"
+            android:text="课前通知推送"
             android:textAlignment="textStart"
             android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:textSize="@dimen/taskFontSize"
             android:layout_weight="1" />
-
         <Switch
-            android:id="@+id/switchTask"
-            android:layout_width="wrap_content"
+            android:id="@+id/switchNotification"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
             android:checked="false"
             />
-        <Button
-            android:id="@+id/test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="测试"/>
+
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="课前音量调整"
+            android:textAlignment="textStart"
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:textSize="@dimen/taskFontSize"
+            android:layout_weight="1" />
+        <Switch
+            android:id="@+id/switchVoiceDown"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:checked="false"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="课后音量调整"
+            android:textAlignment="textStart"
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:textSize="@dimen/taskFontSize"
+            android:layout_weight="1" />
+        <Switch
+            android:id="@+id/switchVoiceUp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:checked="false"
+            />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#258"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="220dp"
+        android:text="确定"/>
 
 
 </LinearLayout>

@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.j_king.course">
     <uses-permission android:name ="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
-        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/course"
         android:label="@string/app_name"
@@ -27,11 +28,32 @@
         </activity>
 
 
-        <service android:name="com.example.j_king.task.AlarmService"></service>
-        <receiver android:name="com.example.j_king.task.AlarmReceiver"></receiver>
-        <service android:name="com.example.j_king.task.TaskServices"></service>
-        <receiver android:name="com.example.j_king.task.TaskReceiver"></receiver>
-        <service android:name="com.example.j_king.task.CourseServices"></service>
+        <service
+            android:name="com.example.j_king.task.AlarmService"
+            android:process=":servicesProcess"
+            />
+        <receiver
+            android:name="com.example.j_king.task.AlarmReceiver"
+            android:process=":servicesProcess"
+            />
+
+        <service
+            android:name="com.example.j_king.task.TaskServices"
+            android:process=":servicesProcess"
+            />
+        <receiver
+            android:name="com.example.j_king.task.TaskReceiver"
+            android:process=":servicesProcess"
+
+            />
+        <service
+            android:name="com.example.j_king.task.CourseServices"
+            android:process=":servicesProcess"
+            />
+        <receiver
+            android:name="com.example.j_king.task.CourseReceive"
+            android:process=":servicesProcess"
+            />
     </application>
 
 </manifest>

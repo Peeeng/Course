@@ -28,7 +28,7 @@ public class MyTTSCheck {
     public int speakVoice(String text){
         //返回speak的状态，ERROR、SUCCESS
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            return mTts.speak(text,QUEUE_FLUSH,null,"222") ;
+            return mTts.speak(text,QUEUE_ADD,null,"222") ;
         else
             return mTts.speak(text,QUEUE_FLUSH,null) ;
     }

@@ -259,25 +259,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/navBtHeight">
-
             <Button
                 android:id="@+id/btMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/button_color"
+                android:layout_marginStart="@dimen/navBtMarginLeft"
+                android:layout_marginEnd="@dimen/navBtMarginRight"
                 android:layout_weight="1"
                 android:text="@string/mainPage" />
+
+
 
             <Button
                 android:id="@+id/btTask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/button_color"
+                android:layout_marginStart="@dimen/navBtMarginLeft"
+                android:layout_marginEnd="@dimen/navBtMarginRight"
                 android:layout_weight="1"
                 android:text="@string/taskPage" />
 
             <Button
                 android:id="@+id/btTime"
                 android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_color"
+                android:layout_marginStart="@dimen/navBtMarginLeft"
+                android:layout_marginEnd="@dimen/navBtMarginRight"
                 android:layout_weight="1"
                 android:text="@string/timePage" />
 
@@ -285,6 +298,10 @@
                 android:id="@+id/btSelf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/button_color"
+                android:layout_marginStart="@dimen/navBtMarginLeft"
+                android:layout_marginEnd="18dp"
                 android:layout_weight="1"
                 android:text="@string/selfPage" />
 
