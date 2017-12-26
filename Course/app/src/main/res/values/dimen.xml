@@ -19,7 +19,7 @@
     <!--actionBar边距-->
     <dimen name="actionBarMargin">5dp</dimen>
     <!--actionBar字体大小-->
-    <dimen name="actionFontSize">22dp</dimen>
+    <dimen name="actionFontSize">22sp</dimen>
     <!--actionBar高度-->
     <dimen name="actionBarHeight">60dp</dimen>
 
@@ -32,6 +32,7 @@
     <dimen name="navBtHeight">60dp</dimen>
     <dimen name="navBtMarginLeft">5dp</dimen>
     <dimen name="navBtMarginRight">5dp</dimen>
+    <dimen name="navBtMarginBottom">5dp</dimen>
 
 
     <!--课程内容的高度-->
@@ -42,5 +43,25 @@
 
     <!--任务页面-->
     <dimen name="taskFontSize">18dp</dimen>
+
+    <!--课程详情-->
+    <dimen name="detailTitleFontSize">20sp</dimen>
+    <dimen name="detailFontSize">18sp</dimen>
+    <dimen name="courseMargin">16dp</dimen>
+    <dimen name="courseHeight">40dp</dimen>
+    <dimen name="detailItemBottomMargin">10dp</dimen>
+    <dimen name="detailItemLeftMargin">20dp</dimen>
+
+    <!--时间设置-->
+    <dimen name="timeTitleFontSize">20sp</dimen>
+    <dimen name="timeFontSize">20sp</dimen>
+    <dimen name="timeSetMargin">16dp</dimen>
+    <dimen name="timeSetHeight">40dp</dimen>
+    <dimen name="timeSetBottomMargin">10dp</dimen>
+    <dimen name="timeSetLeftMargin">20dp</dimen>
+
+    <!--课程编辑-->
+    <dimen name="affairFontSize">18sp</dimen>
+    <dimen name="hintFontSize">16sp</dimen>
 
 </resources>

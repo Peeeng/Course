@@ -2,6 +2,9 @@
     <string name="app_name">Course</string>
     <string name="course_time">Time</string>
     <string name="course_table">课程表</string>
+    <string name="rtnBack">返回</string>
+
+
     <string name="mon">一</string>
     <string name="tue">二</string>
     <string name="wed">三</string>
@@ -9,9 +12,38 @@
     <string name="fri">五</string>
     <string name="sat">六</string>
     <string name="sun">日</string>
+
     <string name="set">设置</string>
+
+    <!--导航栏-->
     <string name="mainPage">首页</string>
     <string name="taskPage">任务</string>
     <string name="timePage">时间表</string>
     <string name="selfPage">个人中心</string>
+
+    <!--课程编辑框-->
+    <string name="eventText">事件:</string>
+    <string name="eventHint">请输入事件</string>
+    <string name="placeText">地点:</string>
+    <string name="placeHint">请输入地点</string>
+
+    <!--课程详情-->
+    <string name="courseDetailText">课堂信息</string>
+    <string name="courseNameText">名称:</string>
+    <string name="courseAddrText">地点:</string>
+    <string name="courseTeacText">教师:</string>
+    <string name="courseTimeText">节次:</string>
+    <string name="courseWeekText">周次:</string>
+
+    <!--时间设置-->
+    <string name="cTime12">第 1 - 2 节课：</string>
+    <string name="cTime34">第 3 - 4 节课：</string>
+    <string name="cTime56">第 5 - 6 节课：</string>
+    <string name="cTime78">第 7 - 8 节课：</string>
+    <string name="cTime910">第 9-10  节课：</string>
+    <string name="cTime1112">第 11-12节课：</string>
+    <string name="callTime">呼叫次数：</string>
+
+
+
 </resources>
