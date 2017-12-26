@@ -86,6 +86,12 @@ public class CourseDB {
 //        cur.close();
         return cur ;
     }
-
-
+    public int updateByCourse(ContentValues values, String whereClause,String[] whereArgs){
+        int rtn = db.update(DB_TABLE,values,whereClause,whereArgs);
+        return rtn ;
+    }
+    public int deleteByCourse(String whereClause,String[] whereArgs){
+        int rtn = db.delete(DB_TABLE,whereClause,whereArgs);
+        return rtn ;
+    }
 }
