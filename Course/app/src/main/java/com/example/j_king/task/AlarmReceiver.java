@@ -33,7 +33,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.e(TAG, "onReceive: 时钟变化" );
 
     }
-
     /**
      *
      * @param context
@@ -52,5 +51,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         return false ;
     }
-
 }
