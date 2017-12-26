@@ -10,6 +10,9 @@ import android.widget.Toast;
 import com.example.j_king.course.MainActivity;
 import com.example.j_king.course.R;
 import com.example.j_king.course.TaskActivity;
+import com.example.j_king.course.TimeActivity;
+
+import java.sql.Time;
 
 import static com.example.j_king.getsetdata.CourseDB.TAG;
 
@@ -35,10 +38,16 @@ public class NavListener implements View.OnClickListener {
         Button bt = (Button)view  ;
         switch (bt.getId()){
             case R.id.btMain :
-                ;
+                break;
+
             case R.id.btTask:
                 Intent intent = new Intent(context,TaskActivity.class) ;
                 context.startActivity(intent);
+                break;
+            case R.id.btTime:
+                Intent intent1=new Intent(context,TimeActivity.class);
+                context.startActivity(intent1);
+                break;
         }
     }
 }
