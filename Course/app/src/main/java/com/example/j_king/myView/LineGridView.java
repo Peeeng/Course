@@ -52,7 +52,6 @@ public class LineGridView extends GridView {
         View viewColLast = getChildAt(colnum - 1);//第一行最后一个view
         View viewRowLast = getChildAt((rownum - 1) * colnum); //第一列最后一个view
 
-
         for (int i = 1, c = 1; i < rownum || c < colnum; i++, c++) {
             //画横线
             canvas.drawLine(view0.getLeft(), view0.getBottom() * i, viewColLast.getRight(), viewColLast.getBottom() * i, localPaint);
@@ -83,5 +82,4 @@ public class LineGridView extends GridView {
         }
 
     }
-
 }
