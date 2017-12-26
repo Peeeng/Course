@@ -3,19 +3,13 @@ package com.example.j_king.course;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.textservice.TextServicesManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -27,36 +21,54 @@ import com.example.j_king.myView.SeekBarDialog;
 import com.example.j_king.task.AlarmService;
 import com.example.j_king.tts.MyTTSCheck;
 
-import org.w3c.dom.Text;
-
-import java.util.Locale;
-
 
 public class TaskActivity extends AppCompatActivity   {
     private static final String TAG = "TTS Demo" ;
     private static final Integer MY_DATA_CHECK_CODE = 0x0011;
     private Switch switchOpenTTS ,switchNotification,switchVoiceDown,switchVoiceUp;
     private MyTTSCheck myTTSCheck;
-    private SharedPreferencesHelper sp  ;
+    private SharedPreferencesHelper sp;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
 
-        Log.e(TAG, "onCreate: " );
 
-        switchOpenTTS  = (Switch) findViewById(R.id.switchOpenTTS) ;
-        switchNotification = (Switch) findViewById(R.id.switchNotification) ;
-        switchVoiceDown  = (Switch) findViewById(R.id.switchVoiceDown) ;
-        switchVoiceUp  = (Switch) findViewById(R.id.switchVoiceUp) ;
+        Log.e(TAG, "onCreate: ");
+
+        switchOpenTTS  = (Switch) findViewById(R.id.switchOpenTTS);
+        switchNotification = (Switch) findViewById(R.id.switchNotification);
+        switchVoiceDown  = (Switch) findViewById(R.id.switchVoiceDown);
+        switchVoiceUp  = (Switch) findViewById(R.id.switchVoiceUp);
 
         sp = new SharedPreferencesHelper(TaskActivity.this,"taskConfig") ;
+        if (sp.getBoolean("isOpenTTS")){
+            Intent checkIntent = new Intent();
+            checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+            startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+            switchOpenTTS.setChecked(true);
+        }
+        if (sp.getBoolean("isSendNotification")){
+            Notification taskNotification ;
+            //获取NotificationManager实例
+            //实例化NotificationCompat.Builde并设置相关属性
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(TaskActivity.this)
+                    //设置小图标
+                    .setTicker( "课程通知" )
+                    .setContentTitle("课程通知")
+                    .setSmallIcon(R.drawable.course)
+                    //设置通知内容
+                    .setContentText("已启动课程通知");
+            //通过builder.build()方法生成Notification对象,并发送通知,id=1
+            taskNotification = builder.build(); // 获取构建好的Notification
+            taskNotification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify(1,taskNotification);
+            switchNotification.setChecked(true);
+        }
         prepareListen();
-
     }
-
-
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -66,7 +78,6 @@ public class TaskActivity extends AppCompatActivity   {
         Log.e(TAG, "onDestroy: " );
     }
 
-
     private void prepareListen(){
         Button test = (Button) findViewById(R.id.test) ;
 
@@ -75,11 +86,11 @@ public class TaskActivity extends AppCompatActivity   {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 switch(buttonView.getId()){
                     case R.id.switchOpenTTS:
-                        if (isChecked) {
+                       if (isChecked) {
                             //检查TTS 语音引擎数据是否完备，此步骤将会打开对话框选择哪一个引擎
                             Intent checkIntent = new Intent();
-                            checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-                            startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+                        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+                        startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
                         }
                         sp.putValue("isOpenTTS",isChecked) ;
                         break ;
@@ -100,7 +111,11 @@ public class TaskActivity extends AppCompatActivity   {
                             taskNotification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
                             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                             manager.notify(1,taskNotification);
+                        }else{
+                            NotificationManager manager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                            manager.cancel(1);
                         }
+
                         sp.putValue("isSendNotification",isChecked) ;
                         break ;
                     case R.id.switchVoiceUp:
@@ -115,7 +130,7 @@ public class TaskActivity extends AppCompatActivity   {
                             SeekBarDialog seekBarDialog = new SeekBarDialog(TaskActivity.this,"VoiceDownRing",sp) ;
                             seekBarDialog.alertSeekBarDialog("设置课前音量");
                         }
-                        sp.putValue("isVoiceUp",isChecked);
+                        sp.putValue("isVoiceDown",isChecked);
                         break ;
                 }
             }
@@ -127,13 +142,10 @@ public class TaskActivity extends AppCompatActivity   {
                 finish();
             }
         });
-
         switchOpenTTS.setOnCheckedChangeListener(switchListener);
         switchNotification.setOnCheckedChangeListener(switchListener);
         switchVoiceDown.setOnCheckedChangeListener(switchListener);
         switchVoiceUp.setOnCheckedChangeListener(switchListener);
-
-
     }
 
     @Override
@@ -168,8 +180,5 @@ public class TaskActivity extends AppCompatActivity   {
                     Log.e(TAG, "It's occur ERROR when check TTS engine");
             }
         }
-
     }
-
-
 }
