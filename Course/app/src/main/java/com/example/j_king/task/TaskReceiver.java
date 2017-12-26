@@ -1,17 +1,8 @@
 package com.example.j_king.task;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
-import com.example.j_king.getsetdata.CourseDB;
-
-import java.util.ArrayList;
 
 /**
  * @name Course
