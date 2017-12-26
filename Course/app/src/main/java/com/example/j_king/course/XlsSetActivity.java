@@ -15,15 +15,23 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.j_king.getsetdata.CourseDB;
@@ -33,10 +41,13 @@ import com.example.j_king.getsetdata.XlsSetDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+
 
 /**
  * Created by J-King on 2017/9/23.
@@ -53,6 +64,7 @@ public class XlsSetActivity extends AppCompatActivity {
     private EditText editXlsUrl;
     private Spinner spinnerWeek ;
     private Button btOk ;
+    private TextView link;
 
     private static final int SELECTXLS = 0x0011;
     private static final int SHOWXLS = 0x0012;
@@ -77,8 +89,6 @@ public class XlsSetActivity extends AppCompatActivity {
         setRequestExternalStronge();
         prepareListen();
         initData();
-
-
     }
 
     public void initData(){
@@ -109,8 +119,16 @@ public class XlsSetActivity extends AppCompatActivity {
         btShowXls = (Button) findViewById(R.id.btShowXls) ;
         spinnerWeek = (Spinner) findViewById(R.id.spinnerWeek) ;
         btOk = (Button) findViewById(R.id.btOk) ;
+        link=(TextView)findViewById(R.id.link);
+      //  link.setText(Html.fromHtml( "<b>text3:</b> Text with a " + "<a href=\"http://www.baidu.com\">link</a> " +"created in the Java source code using HTML."));
+        link.setText(
+                Html.fromHtml(
+                        "<b>还没有下载课表?</b>"+"<a href=\"http://www.nchu.edu.cn/\">点击这里下载课程表</a>" ));
+        link.setMovementMethod(LinkMovementMethod.getInstance());
 
-        View.OnClickListener listenerSelectXls = new View.OnClickListener() {
+
+
+        View.OnClickListener listenerSelectXls = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -128,8 +146,6 @@ public class XlsSetActivity extends AppCompatActivity {
             }
         };
 
-
-        
         View.OnClickListener listenerBtOk = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +153,17 @@ public class XlsSetActivity extends AppCompatActivity {
                 if(xlsPath !=  null && !xlsPath.equals("")){
                     updateCourseTableContent(xlsPath);
                 }
+
+              /*  CourseUtil courseUtil = new CourseUtil("15046218","King1001","学生");
+                String flag =  courseUtil.connectToNchu();
+                Log.e(TAG, "onClick: "+flag );
+                InputStream in =courseUtil.getInputStream() ;
+                try {
+                    courseUtil.saveToFile(in,"data/aaaaa.xls") ;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                courseUtil.close();*/
 
                 //返回到上一级（主）窗口
                 Intent intent = new Intent() ;
@@ -147,8 +174,6 @@ public class XlsSetActivity extends AppCompatActivity {
                 setResult(CHANGEXLS,intent);
 
                 finish();
-
-
             }
         };
 
@@ -183,8 +208,6 @@ public class XlsSetActivity extends AppCompatActivity {
                     break;
             }
         }
-
-
     }
 
     private  String getRealFilePath(final Context context, final Uri uri ) {
