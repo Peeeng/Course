@@ -70,9 +70,10 @@ public class CourseDB {
 
 
 
-    public void insertCourse(ContentValues values) {
+    public long insertCourse(ContentValues values) {
         long rowId = db.insert(DB_TABLE, null, values);
         Log.i(TAG, "insertCourse: 插入第" + rowId + "行数据。");
+        return rowId;
     }
 
     public  void deleteTable(){
