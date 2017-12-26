@@ -107,8 +107,6 @@ public class XlsData {
                         courseList.add(newtmpitem);
                     }
                 }
-
-
             }
         }
         return courseList ;
@@ -122,7 +120,7 @@ public class XlsData {
     private int[] splitClassWeeks(String classWeeks){
 
         if(classWeeks.contains(",")){
-            String[] weekBeginEnd = classWeeks.split(",") ;
+            String[] weekBeginEnd = classWeeks.split(",");
             int [] weeks = new int[weekBeginEnd.length];
             for(int i = 0 ; i < weekBeginEnd.length ;i++ ){
                 if(weekBeginEnd[i].contains("-"))
@@ -143,8 +141,6 @@ public class XlsData {
         }
         else
             return new int[]{Integer.valueOf(classWeeks)} ;
-
-
     }
 
     /**
