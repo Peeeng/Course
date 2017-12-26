@@ -2,35 +2,29 @@ package com.example.j_king.task;
 
 import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.j_king.course.R;
+import com.example.j_king.course.TimeActivity;
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.CurWeekSet;
-import com.example.j_king.getsetdata.XlsSetDB;
+import com.example.j_king.getsetdata.SharedPreferencesHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +38,7 @@ import java.util.Map;
 public class TaskServices extends Service {
     private static final String TAG = "TaskServices";
     private static CourseDB courseDB;
+    private SharedPreferencesHelper sp;
 
     //已经呼叫的次数
     private int voicedTimes;
@@ -88,7 +83,7 @@ public class TaskServices extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
+               // curDayCourse = getOneDayCourse(curWeek, curDay);
                 startCourseServices(intent);
 
             }
@@ -98,7 +93,8 @@ public class TaskServices extends Service {
         return START_STICKY;
     }
 
-    private void startCourseServices(Intent intent) {
+    public void startCourseServices(Intent intent) {
+    //    curDayCourse = getOneDayCourse(curWeek, curDay);
         int lastSpeakStatus;
         if (intent != null)
             lastSpeakStatus = intent.getIntExtra("speakStatus", 0);
@@ -175,6 +171,7 @@ public class TaskServices extends Service {
         if (curVoiceCourse == null)
             return null;
         //设置时间为当前年月日
+        sp=new SharedPreferencesHelper(TaskServices.this,"taskConfig") ;
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -185,20 +182,20 @@ public class TaskServices extends Service {
         int cTime = (int) curVoiceCourse.get(CourseDB.cTime);
         switch (cTime) {
             case 1:
-                hour = 8;
-                minute = 0;
+                hour = sp.getInt("HourofDay1");
+                minute = sp.getInt("Minute1");
                 break;
             case 3:
-                hour = 10;
-                minute = 0;
+                hour = sp.getInt("HourofDay2");
+                minute = sp.getInt("Minute2");
                 break;
             case 5:
-                hour = 13;
-                minute = 30;
+                hour = sp.getInt("HourofDay");
+                minute = sp.getInt("Minute");
                 break;
             case 7:
-                hour = 15;
-                minute = 30;
+                hour = sp.getInt("HourofDay3");
+                minute = sp.getInt("Minute3");
                 break;
             case 9:
                 hour = 19;
@@ -229,7 +226,7 @@ public class TaskServices extends Service {
      */
     private Map<String, Object> getNextCourse(int index) {
         addDay = 0;
-        while (index >= curDayCourse.size()) {
+        while (curDayCourse == null ||index >= curDayCourse.size()) {
             //如果当天的课程信息都被呼叫完，获取第二天的课程并返回
             ++addDay;
             //重新计算周次和星期
@@ -271,7 +268,7 @@ public class TaskServices extends Service {
         Cursor cursor = courseDB.queryCourse(new String[]{CourseDB.cName, CourseDB.cAddr, CourseDB.cTime, CourseDB.cWeekday},
                 CourseDB.cWeeks + "=? and " + CourseDB.cWeekday + "=?",
                 new String[]{week.toString(), day.toString()},
-                null, null, null);
+                null, null,"cTime asc");
         if (cursor.getCount() > 0) {
             List<Map<String, Object>> tmpCourse = new ArrayList<>();
             cursor.moveToFirst();
@@ -281,6 +278,7 @@ public class TaskServices extends Service {
                 tmp.put(CourseDB.cName, cursor.getString(cursor.getColumnIndex(CourseDB.cName)));
                 tmp.put(CourseDB.cAddr, cursor.getString(cursor.getColumnIndex(CourseDB.cAddr)));
                 tmp.put(CourseDB.cWeekday, cursor.getInt(cursor.getColumnIndex(CourseDB.cWeekday)));
+                String name=cursor.getString(cursor.getColumnIndex(CourseDB.cName));
                 tmpCourse.add(tmp);
             } while (cursor.moveToNext());
             cursor.close();
@@ -309,6 +307,4 @@ public class TaskServices extends Service {
         taskNotification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
         return taskNotification;
     }
-
-
 }
