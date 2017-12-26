@@ -20,7 +20,7 @@ public class XlsSetDB {
     public static final String xlsSetId = "xlsSetId";
     public static final String xlsPath = "xlsPath";
     public static final String curWeek = "curWeek" ;
-    public static final String startDate = "startDate" ;
+    public static final String startDate = "startDate";
 
     public static final String defaultId = "XlsUniqueueId";
     private static XlsSetDBHelper xlsSetDBHelper  ;
@@ -28,7 +28,6 @@ public class XlsSetDB {
 
     public XlsSetDB(Context context){
         db = getInstance(context).getWritableDatabase() ;
-
     }
 
     private static synchronized XlsSetDBHelper getInstance(Context context){
@@ -88,6 +87,4 @@ public class XlsSetDB {
         int  rtn = db.delete(DB_TABLE,null,null) ;
         return rtn ;
     }
-
-
 }
