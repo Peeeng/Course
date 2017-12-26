@@ -24,8 +24,6 @@ public class ReadSqlite {
         courseDB = new CourseDB(context) ;
     }
 
-
-
     /**
      *
      * @param xlsFile xls表格文件流
@@ -70,18 +68,18 @@ public class ReadSqlite {
                 if(num == 0 ){
                     Map<String , String > cNameAndtName = new HashMap<>() ;
                     cNameAndtName.put(CourseDB.cName,"") ;
-                    cNameAndtName.put(CourseDB.cTeacher,"") ;
+                    cNameAndtName.put(CourseDB.cAddr,"") ;
                     cNameAndtNameList.add(cNameAndtName) ;
                 }
                 else if (num == 1){
                     cursor.moveToFirst() ;
                     String courseName ;
-                    String teacherName   ;
+                    String courseAddr   ;
                     Map<String , String > cNameAndtName = new HashMap<>() ;
                     courseName = cursor.getString(cursor.getColumnIndex(CourseDB.cName)) ;
-                    teacherName = cursor.getString(cursor.getColumnIndex(CourseDB.cAddr)) ;
+                    courseAddr = cursor.getString(cursor.getColumnIndex(CourseDB.cAddr)) ;
                     cNameAndtName.put(CourseDB.cName,courseName) ;
-                    cNameAndtName.put(CourseDB.cTeacher,teacherName) ;
+                    cNameAndtName.put(CourseDB.cAddr,courseAddr) ;
                     cNameAndtNameList.add(cNameAndtName) ;
                 }
                 else
@@ -92,8 +90,4 @@ public class ReadSqlite {
 
         return cNameAndtNameList ;
     }
-
-
-
-
 }
