@@ -7,7 +7,7 @@
         android:layout_height="@dimen/actionBarHeight"
         android:background="@color/myActionBar">
         <TextView
-            android:id="@+id/coursedetailsName"
+            android:id="@+id/courseDetailsName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -20,7 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/courseHeight"
-        android:layout_marginLeft="@dimen/courseMargin"
+        android:layout_margin="@dimen/courseMargin"
         android:orientation="vertical">
 
         <TextView
@@ -42,9 +42,10 @@
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_margin="@dimen/courseMargin"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/courseMargin"
+        android:layout_marginEnd="@dimen/courseMargin"
         android:rowCount="6"
         android:columnCount="2">
 
@@ -53,12 +54,12 @@
             android:id="@+id/textView8"
             android:layout_marginBottom="@dimen/detailItemBottomMargin"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="@dimen/detailFontSize"
             android:text="@string/courseNameText" />
 
         <TextView
-            android:id="@+id/coursedetailsName1"
+            android:id="@+id/courseDetailsName1"
             android:layout_marginLeft="@dimen/detailItemLeftMargin"
             android:textSize="@dimen/detailFontSize"
             android:layout_width="wrap_content"
@@ -74,7 +75,7 @@
             android:text="@string/courseAddrText" />
 
         <TextView
-            android:id="@+id/coursedetailsAddr"
+            android:id="@+id/courseDetailsAddr"
             android:layout_marginLeft="@dimen/detailItemLeftMargin"
             android:textSize="@dimen/detailFontSize"
             android:layout_width="wrap_content"
@@ -90,7 +91,7 @@
             android:text="@string/courseTeacText" />
 
         <TextView
-            android:id="@+id/coursedetailsTeacher"
+            android:id="@+id/courseDetailsTeacher"
             android:layout_marginLeft="@dimen/detailItemLeftMargin"
             android:textSize="@dimen/detailFontSize"
             android:layout_width="wrap_content"
@@ -106,7 +107,7 @@
             android:text="@string/courseTimeText" />
 
         <TextView
-            android:id="@+id/coursedetailsCount"
+            android:id="@+id/courseDetailsCount"
             android:layout_marginLeft="@dimen/detailItemLeftMargin"
             android:textSize="@dimen/detailFontSize"
             android:layout_width="wrap_content"
@@ -122,12 +123,20 @@
             android:text="@string/courseWeekText" />
 
         <TextView
-            android:id="@+id/coursedetailsWeek"
+            android:id="@+id/courseDetailsWeek"
             android:layout_marginLeft="@dimen/detailItemLeftMargin"
             android:textSize="@dimen/detailFontSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </GridLayout>
+
+    <Button
+        android:id="@+id/quit"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/navBtMarginBottom"
+        android:layout_height="@dimen/navBtHeight"
+        android:background="@drawable/button_color"
+        android:text="@string/rtnBack" />
 
 </LinearLayout>
