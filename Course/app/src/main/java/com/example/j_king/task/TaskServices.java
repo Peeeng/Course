@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -19,6 +21,7 @@ import com.example.j_king.course.TimeActivity;
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.CurWeekSet;
 import com.example.j_king.getsetdata.SharedPreferencesHelper;
+import com.example.j_king.mylistener.MySensorEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +40,28 @@ import java.util.Map;
  */
 public class TaskServices extends Service {
     private static final String TAG = "TaskServices";
+    public static final String course12HTime = "course12HTime" ;
+    public static final String course34HTime = "course34HTime" ;
+    public static final String course56HTime = "course56HTime" ;
+    public static final String course78HTime = "course78HTime" ;
+    public static final String course910HTime = "course910HTime" ;
+    public static final String course1112HTime = "course1112HTime" ;
+
+    public static final String course12MTime = "course12MTime" ;
+    public static final String course34MTime = "course34MTime" ;
+    public static final String course56MTime = "course56MTime" ;
+    public static final String course78MTime = "course78MTime" ;
+    public static final String course910MTime = "course910MTime" ;
+    public static final String course1112MTime = "course1112MTime" ;
+
+    public static final String course12Time = "course12Time" ;
+    public static final String course34Time = "course34Time" ;
+    public static final String course56Time = "course56Time" ;
+    public static final String course78Time = "course78Time" ;
+    public static final String course910Time = "course910Time" ;
+    public static final String course1112Time = "course1112Time" ;
+
+
     private static CourseDB courseDB;
     private SharedPreferencesHelper sp;
 
@@ -76,6 +101,9 @@ public class TaskServices extends Service {
 
         Log.e(TAG, "onCreate: 首次启动TaskServices");
 
+        SensorManager manager = (SensorManager) this.getSystemService(Service.SENSOR_SERVICE);
+        MySensorEventListener listener = new MySensorEventListener();
+        manager.registerListener(listener, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -182,37 +210,29 @@ public class TaskServices extends Service {
         int cTime = (int) curVoiceCourse.get(CourseDB.cTime);
         switch (cTime) {
             case 1:
-                hour = sp.getInt("HourofDay1");
-                minute = sp.getInt("Minute1");
+                hour = sp.getInt(course12HTime);
+                minute = sp.getInt(course12MTime);
                 break;
             case 3:
-                hour = sp.getInt("HourofDay2");
-                minute = sp.getInt("Minute2");
+                hour = sp.getInt(course34HTime);
+                minute = sp.getInt(course34MTime);
                 break;
             case 5:
-                hour = sp.getInt("HourofDay");
-                minute = sp.getInt("Minute");
+                hour = sp.getInt(course56HTime);
+                minute = sp.getInt(course56MTime);
                 break;
             case 7:
-                hour = sp.getInt("HourofDay3");
-                minute = sp.getInt("Minute3");
+                hour = sp.getInt(course78HTime);
+                minute = sp.getInt(course78MTime);
                 break;
             case 9:
-                hour = 19;
-                minute = 0;
+                hour = sp.getInt(course910HTime);
+                minute = sp.getInt(course910MTime);
                 break;
             case 11:
-                hour = 21;
-                minute = 0;
+                hour = sp.getInt(course1112HTime);
+                minute = sp.getInt(course1112MTime);
                 break;
-
-/*            case 1:hour = 8;minute = 0;break;
-            case 3:hour = 8;minute = 1;break;
-            case 5:hour = 8;minute = 2;break;
-            case 7:hour = 8;minute = 4;break;
-            case 9:hour = 8;minute = 8;break;
-            case 11:hour = 8;minute = 10;break;
-            default:hour = 0;minute = 0;*/
         }
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
