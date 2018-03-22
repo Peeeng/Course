@@ -3,8 +3,10 @@
     package="com.example.j_king.course">
     <uses-permission android:name ="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
+    <!--重力加速度传感器权限 -->
+    <uses-permission android:name="android.hardware.sensor.accelerometer"/>
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/course"
         android:label="@string/app_name"
@@ -26,6 +28,10 @@
 
         <activity android:name=".TaskActivity">
         </activity>
+        <activity android:name=".TimeActivity">
+        </activity>
+        <activity android:name=".ShowDetails">
+        </activity>
 
 
         <service
@@ -39,7 +45,6 @@
 
         <service
             android:name="com.example.j_king.task.TaskServices"
-            android:process=":servicesProcess"
             />
         <receiver
             android:name="com.example.j_king.task.TaskReceiver"
@@ -53,7 +58,12 @@
         <receiver
             android:name="com.example.j_king.task.CourseReceive"
             android:process=":servicesProcess"
+
             />
+        <receiver
+            android:name="com.example.j_king.task.RepeatingAlarm"
+            android:process=":remote" />
+
     </application>
 
 </manifest>

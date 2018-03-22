@@ -3,27 +3,29 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="@dimen/gridItemHeight">
 
-    <TextView
-        android:id="@+id/courseName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:gravity="center_vertical"
-        android:textColor="@color/colorCourseFont"
-        android:layout_weight="7"
 
-        />
+        <TextView
+            android:id="@+id/courseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorCourseFont"
+            android:layout_weight="7"
+            android:padding="1dp"
 
-    <TextView
-        android:id="@+id/courseAddr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:textAlignment="center"
-        android:textColor="@color/colorCourseFont"
-        android:layout_weight="3"
+            />
 
-        />
+        <TextView
+            android:id="@+id/courseAddr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:textAlignment="center"
+            android:textColor="@color/colorCourseFont"
+            android:layout_weight="3"
+
+            />
 
 
 </LinearLayout>

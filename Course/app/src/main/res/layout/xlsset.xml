@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:androi="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,8 +19,6 @@
             android:text="@string/app_name"
             android:layout_marginLeft="@dimen/actionBarMargin"
             android:textSize="@dimen/actionFontSize" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -35,7 +32,7 @@
             android:text="课程文件:"
             android:gravity="center_vertical"
             android:textAlignment="center"
-            android:layout_weight="0.89" />
+            android:layout_weight="1" />
 
         <EditText
             android:id="@+id/editXlsUrl"
@@ -77,12 +74,19 @@
 
         </Spinner>
     </LinearLayout>
+    <TextView
+        android:id="@+id/link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       />
+
     <Button
         android:id="@+id/btOk"
         android:layout_width="@dimen/btokWidth"
-        android:layout_height="wrap_content"
-        android:text="确定"
+        android:layout_marginBottom="@dimen/navBtMarginBottom"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/btokMarginTop"/>
+        android:layout_height="@dimen/navBtHeight"
+        android:background="@drawable/button_color"
+        android:text="确定" />
 
 </LinearLayout>

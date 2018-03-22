@@ -19,14 +19,15 @@ import android.widget.Toast;
 import com.example.j_king.getsetdata.SharedPreferencesHelper;
 import com.example.j_king.myView.SeekBarDialog;
 import com.example.j_king.task.AlarmService;
-import com.example.j_king.tts.MyTTSCheck;
+import com.example.j_king.myunit.MyTTSCheck;
 
 
 public class TaskActivity extends AppCompatActivity   {
     private static final String TAG = "TTS Demo" ;
     private static final Integer MY_DATA_CHECK_CODE = 0x0011;
-    private Switch switchOpenTTS ,switchNotification,switchVoiceDown,switchVoiceUp;
+    private Switch switchOpenTTS ,switchNotification,switchVoiceDown,switchVoiceUp,switchShakeToSpeak;
     private MyTTSCheck myTTSCheck;
+
     private SharedPreferencesHelper sp;
 
     @Override
@@ -41,7 +42,7 @@ public class TaskActivity extends AppCompatActivity   {
         switchNotification = (Switch) findViewById(R.id.switchNotification);
         switchVoiceDown  = (Switch) findViewById(R.id.switchVoiceDown);
         switchVoiceUp  = (Switch) findViewById(R.id.switchVoiceUp);
-
+        switchShakeToSpeak = (Switch) findViewById(R.id.switchShakeToSpeak);
         sp = new SharedPreferencesHelper(TaskActivity.this,"taskConfig") ;
         if (sp.getBoolean("isOpenTTS")){
             Intent checkIntent = new Intent();
@@ -86,7 +87,8 @@ public class TaskActivity extends AppCompatActivity   {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 switch(buttonView.getId()){
                     case R.id.switchOpenTTS:
-                       if (isChecked) {
+                    case R.id.switchShakeToSpeak:
+                        if (isChecked) {
                             //检查TTS 语音引擎数据是否完备，此步骤将会打开对话框选择哪一个引擎
                             Intent checkIntent = new Intent();
                         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);

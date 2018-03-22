@@ -1,20 +1,13 @@
-package com.example.j_king.navlistener;
+package com.example.j_king.mylistener;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.j_king.course.MainActivity;
 import com.example.j_king.course.R;
 import com.example.j_king.course.TaskActivity;
 import com.example.j_king.course.TimeActivity;
-
-import java.sql.Time;
-
-import static com.example.j_king.getsetdata.CourseDB.TAG;
 
 /**
  * @name Course

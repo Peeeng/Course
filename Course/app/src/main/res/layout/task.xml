@@ -78,31 +78,6 @@
             />
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="课前音量调整"
-            android:textAlignment="textStart"
-            android:gravity="center_vertical"
-            android:layout_marginStart="15dp"
-            android:textSize="@dimen/taskFontSize"
-            android:layout_weight="1" />
-        <Switch
-            android:id="@+id/switchVoiceDown"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="20dp"
-            android:checked="false"
-            />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -129,6 +104,57 @@
             />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="课后音量调整"
+            android:textAlignment="textStart"
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:textSize="@dimen/taskFontSize"
+            android:layout_weight="1" />
+        <Switch
+            android:id="@+id/switchVoiceDown"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:checked="false"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="摇一摇提醒"
+            android:textAlignment="textStart"
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:textSize="@dimen/taskFontSize"
+            android:layout_weight="1" />
+        <Switch
+            android:id="@+id/switchShakeToSpeak"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:checked="false"
+            />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/test"
         android:layout_width="match_parent"

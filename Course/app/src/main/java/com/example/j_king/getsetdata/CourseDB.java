@@ -20,12 +20,19 @@ public class CourseDB {
     public static final String DB_TABLE = "mycourse";
     public static final Integer DB_VERSION = 1;
 
-    public static final String cName = "cName";
+    //课程编号，主键
     public static final String cNo = "cNo";
+    //课程名
+    public static final String cName = "cName";
+    //教师
     public static final String cTeacher = "cTeacher";
+    //周次
     public static final String cWeeks = "cWeeks";
+    //星期
     public static final String cWeekday = "cWeekday";
+    //课程时间
     public static final String cTime = "cTime";
+    //课程地点
     public static final String cAddr = "cAddr";
 
     public CourseDB(Context context){

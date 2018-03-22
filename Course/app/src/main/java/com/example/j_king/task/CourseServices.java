@@ -9,17 +9,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.provider.AlarmClock;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.util.TimeUtils;
 
-import com.example.j_king.course.TimeActivity;
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.SharedPreferencesHelper;
 
-import java.util.Calendar;
 import java.util.Locale;
 
 /**

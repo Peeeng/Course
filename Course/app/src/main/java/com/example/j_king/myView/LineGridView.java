@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,7 +17,9 @@ import com.example.j_king.course.R;
  */
 
 public class LineGridView extends GridView {
-    private int rownum ;
+    Paint localPaint = new Paint();//设置画笔
+    RectF rect = new RectF();
+    Paint rectPaint = new Paint();
 
     public LineGridView(Context context){
         super(context) ;
@@ -37,11 +38,11 @@ public class LineGridView extends GridView {
         super.onDraw(canvas);
         int colnum = getNumColumns(); //获取列数
         int total = getChildCount();  //获取Item总数
+        int rownum ;
 
         //计算行数
         rownum = (total-1)/colnum + 1 ;
 
-        Paint localPaint = new Paint();//设置画笔
         localPaint.setStyle(Paint.Style.STROKE); //画笔实心
         localPaint.setColor(getContext().getResources().getColor(R.color.grid_line));//画笔颜色
 
@@ -61,10 +62,8 @@ public class LineGridView extends GridView {
         }
 
 
-        RectF rect = new RectF();
         int padding = 6 ;
         float round =10f ;
-        Paint rectPaint = new Paint();
         TypedArray colors = getResources().obtainTypedArray(R.array.itemColors);
         View view ;
         TextView courseName;
