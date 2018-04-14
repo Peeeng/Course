@@ -15,24 +15,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.ReadSqlite;
@@ -41,7 +32,6 @@ import com.example.j_king.getsetdata.XlsSetDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -199,6 +189,7 @@ public class XlsSetActivity extends AppCompatActivity {
                 //请求码为--浏览，获取选中的路径
                 case SELECTXLS:
                     xlsPath = getRealFilePath(this,xlsUri);
+                    xlsPath = xlsPath.replace("/root","");
                     String [] tmp = xlsPath.split("/");
                     String xlsName = tmp[tmp.length-1];
                     editXlsUrl.setText(xlsName);
@@ -210,13 +201,14 @@ public class XlsSetActivity extends AppCompatActivity {
         }
     }
 
+    @TargetApi(26)
     private  String getRealFilePath(final Context context, final Uri uri ) {
         if ( null == uri ) return null;
         final String scheme = uri.getScheme();
         String data = null;
         if ( scheme == null )
             data = uri.getPath();
-        else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
+        else if ( Build.VERSION.SDK_INT >= 26 || ContentResolver.SCHEME_FILE.equals( scheme ) ) {
             data = uri.getPath();
         } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {//Images.ImageColumns.DATA
             Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
