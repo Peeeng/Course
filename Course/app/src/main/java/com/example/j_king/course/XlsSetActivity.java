@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -79,11 +78,17 @@ public class XlsSetActivity extends AppCompatActivity {
         courseDB = new CourseDB(XlsSetActivity.this);
         readSqlite = new ReadSqlite(XlsSetActivity.this);
 
+        //请求存储权限
         setRequestExternalStronge();
+        //准备监听事件
         prepareListen();
+        //初始化数据
         initData();
     }
 
+    /**
+     * 初始化数据
+     */
     public void initData(){
         Cursor cur = xlsSetDB.queryFromXlsSet(new String[]{XlsSetDB.xlsPath,XlsSetDB.curWeek},null,null,null,null,null);
         if (cur.getCount() > 0 ){
@@ -191,17 +196,6 @@ public class XlsSetActivity extends AppCompatActivity {
         }
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if(null!=cursor&&cursor.moveToFirst()){;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-            cursor.close();
-        }
-        return res;
-    }
 
     /**
      * 专为Android4.4设计的从Uri获取文件绝对路径，以前的方法已不好使
@@ -275,21 +269,21 @@ public class XlsSetActivity extends AppCompatActivity {
      */
     public String getDataColumn(Context context, Uri uri, String selection,
                                 String[] selectionArgs) {
-
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {column};
-
+        Cursor cursor = null ;
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
-            if ( Build.VERSION.SDK_INT >= 26 )
-                return  uri.getPath().replace("/root","");
-            else if (cursor != null && cursor.moveToFirst()) {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
+             cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA);
+                if(column_index >= 0 ) {
+                    return cursor.getString(column_index);
+                }else
+                    return  uri.getPath().replace("/root","");
             }
-        } finally {
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
             if (cursor != null)
                 cursor.close();
         }
@@ -318,29 +312,6 @@ public class XlsSetActivity extends AppCompatActivity {
      */
     public boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-    @TargetApi(26)
-    private  String getRealFilePath(final Context context, final Uri uri ) {
-        if ( null == uri ) return null;
-        final String scheme = uri.getScheme();
-        String data = null;
-        if ( scheme == null )
-            data = uri.getPath();
-        else if ( Build.VERSION.SDK_INT >= 26 || ContentResolver.SCHEME_FILE.equals( scheme ) ) {
-            data = uri.getPath();
-        } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {//Images.ImageColumns.DATA
-            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
-            if ( null != cursor ) {
-                if ( cursor.moveToFirst() ) {
-                    int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
-                    if ( index > -1 ) {
-                        data = cursor.getString( index );
-                    }
-                }
-                cursor.close();
-            }
-        }
-        return data;
     }
 
     @TargetApi(23)
@@ -382,7 +353,6 @@ public class XlsSetActivity extends AppCompatActivity {
     }
 
     private void updateXlsSetTableContent(){
-
         //修改系统设置表里的路径和周次
         curWeek = spinnerWeek.getSelectedItemPosition() + 1  ;
         ContentValues contentValues = new ContentValues() ;
