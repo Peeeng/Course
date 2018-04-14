@@ -19,13 +19,13 @@
     <color name="colorCourseFont">#000</color>
     <!--周一到周日7 天的颜色数组-->
     <array name="itemColors">
-        <item>#d5804b</item>
-        <item>#63d052</item>
-        <item>#53d0cc</item>
-        <item>#526bb4</item>
-        <item>#8f4bd3</item>
-        <item>#ca54c4</item>
-        <item>#cc4e7d</item>
+        <item>#d554b428</item>
+        <item>#ce32b29c</item>
+        <item>#db448bc6</item>
+        <item>#d7bd4431</item>
+        <item>#d97e39c3</item>
+        <item>#d5be31b7</item>
+        <item>#dac62a64</item>
     </array>
 
     <!--导航按钮颜色-->

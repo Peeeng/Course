@@ -80,7 +80,6 @@ public class TaskActivity extends AppCompatActivity   {
     }
 
     private void prepareListen(){
-        Button test = (Button) findViewById(R.id.test) ;
 
         CompoundButton.OnCheckedChangeListener switchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -138,7 +137,9 @@ public class TaskActivity extends AppCompatActivity   {
             }
         };
 
-        test.setOnClickListener(new View.OnClickListener() {
+        Button quitTaskSet = (Button) findViewById(R.id.quitTaskSet) ;
+
+        quitTaskSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

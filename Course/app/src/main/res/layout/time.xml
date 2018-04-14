@@ -63,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/timeSetLeftMargin"
+            android:text="08:00"
             android:textSize="@dimen/timeFontSize" />
 
         <TextView
@@ -78,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/timeSetLeftMargin"
+            android:text="10:00"
             android:textSize="@dimen/timeFontSize" />
 
         <TextView
@@ -93,6 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/timeSetLeftMargin"
+            android:text="13:30"
             android:textSize="@dimen/timeFontSize" />
 
         <TextView
@@ -108,6 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/timeSetLeftMargin"
+            android:text="15:30"
             android:textSize="@dimen/timeFontSize" />
 
         <TextView
@@ -123,6 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/timeSetLeftMargin"
+            android:text="19:00"
             android:textSize="@dimen/timeFontSize" />
 
         <TextView
@@ -137,6 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/timeSetLeftMargin"
+            android:text="21:00"
             android:textSize="@dimen/timeFontSize" />
 
         <TextView
@@ -167,6 +173,8 @@
         android:id="@+id/quit"
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/navBtMarginBottom"
+        android:layout_marginStart="@dimen/bigBtnMargin"
+        android:layout_marginEnd="@dimen/bigBtnMargin"
         android:layout_height="@dimen/navBtHeight"
         android:background="@drawable/button_color"
         android:text="@string/rtnBack" />

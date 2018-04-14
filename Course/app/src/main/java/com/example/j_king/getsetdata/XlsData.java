@@ -3,10 +3,10 @@ package com.example.j_king.getsetdata;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -118,29 +118,23 @@ public class XlsData {
      * @return  分割开字符串后产生教学周次的整形数组
      */
     private int[] splitClassWeeks(String classWeeks){
+        int count = 0 ;
+        String[] weekBeginEnd = classWeeks.split(",");
+        int [] weeks = new int[25];
+        for(int i = 0 ; i < weekBeginEnd.length ;i++ ){
+            if(weekBeginEnd[i].contains("-")){
+                String[] weekBE = weekBeginEnd[i].split("-") ;
+                int begin = Integer.parseInt(weekBE[0]);
+                int end = Integer.parseInt(weekBE[1]) ;
 
-        if(classWeeks.contains(",")){
-            String[] weekBeginEnd = classWeeks.split(",");
-            int [] weeks = new int[weekBeginEnd.length];
-            for(int i = 0 ; i < weekBeginEnd.length ;i++ ){
-                if(weekBeginEnd[i].contains("-"))
-                    continue;
-                weeks[i] = Integer.valueOf(weekBeginEnd[i]) ;
+                for(int j = begin ; j <= end ;j++ ){
+                    weeks[count++] = j ;
+                }
             }
-            return weeks ;
+            else
+                weeks[count++] = Integer.valueOf(weekBeginEnd[i]) ;
         }
-        else if(classWeeks.contains("-")){
-            String[] weekBeginEnd = classWeeks.split("-") ;
-            int begin = Integer.parseInt(weekBeginEnd[0]);
-            int end = Integer.parseInt(weekBeginEnd[1]) ;
-            int weeks[] = new int[end-begin+1] ;
-            for(int i = begin ; i <= end ;i++ ){
-                weeks[i-begin] = i ;
-            }
-            return weeks ;
-        }
-        else
-            return new int[]{Integer.valueOf(classWeeks)} ;
+        return  Arrays.copyOf(weeks, count);
     }
 
     /**

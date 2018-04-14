@@ -3,11 +3,9 @@ package com.example.j_king.course;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-
-import com.example.j_king.getsetdata.ReadSqlite;
-
-import org.w3c.dom.Text;
 
 public class ShowDetails extends AppCompatActivity{
     @Override
@@ -31,5 +29,13 @@ public class ShowDetails extends AppCompatActivity{
         courseDetailsTeacher.setText(bundle.getString("CTeacher"));
         courseDetailsCount.setText(bundle.getString("CTime"));
         courseDetailsWeek.setText(bundle.getString("CCurWeek"));
+
+        Button quitDetailsWeek = (Button) findViewById(R.id.quitDetailsWeek);
+        quitDetailsWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

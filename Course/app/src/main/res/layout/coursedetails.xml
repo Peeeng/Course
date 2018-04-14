@@ -132,9 +132,11 @@
     </GridLayout>
 
     <Button
-        android:id="@+id/quit"
+        android:id="@+id/quitDetailsWeek"
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/navBtMarginBottom"
+        android:layout_marginStart="@dimen/bigBtnMargin"
+        android:layout_marginEnd="@dimen/bigBtnMargin"
         android:layout_height="@dimen/navBtHeight"
         android:background="@drawable/button_color"
         android:text="@string/rtnBack" />

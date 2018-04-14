@@ -27,7 +27,7 @@
         android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="课程文件:"
             android:gravity="center_vertical"
@@ -36,20 +36,32 @@
 
         <EditText
             android:id="@+id/editXlsUrl"
+            android:hint=".xls/.xlsx"
+            android:textSize="14sp"
             android:layout_width="181dp"
             android:layout_height="50dp"
+            android:inputType="none"
+            android:focusable="false"
             android:layout_gravity="center_horizontal" />
 
         <Button
             android:id="@+id/btSelectXls"
             android:layout_width="60dp"
             android:layout_height="50dp"
+            android:background="#71a7c6"
+            android:layout_marginTop="@dimen/navBtMarginLeft"
+            android:layout_marginRight="@dimen/navBtMarginLeft"
+            android:layout_marginBottom="@dimen/navBtMarginBottom"
             android:text="浏览" />
 
         <Button
             android:id="@+id/btShowXls"
             android:layout_width="60dp"
             android:layout_height="50dp"
+            android:background="#71a7c6"
+            android:layout_marginTop="@dimen/navBtMarginLeft"
+            android:layout_marginBottom="@dimen/navBtMarginBottom"
+            android:layout_marginRight="@dimen/navBtMarginLeft"
             android:text="预览" />
     </LinearLayout>
     <LinearLayout
@@ -80,13 +92,23 @@
         android:layout_height="wrap_content"
        />
 
-    <Button
-        android:id="@+id/btOk"
-        android:layout_width="@dimen/btokWidth"
-        android:layout_marginBottom="@dimen/navBtMarginBottom"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="@dimen/navBtHeight"
-        android:background="@drawable/button_color"
-        android:text="确定" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/btOk"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/navBtMarginBottom"
+            android:layout_marginStart="@dimen/bigBtnMargin"
+            android:layout_marginEnd="@dimen/bigBtnMargin"
+            android:layout_height="@dimen/navBtHeight"
+            android:background="@drawable/button_color"
+            android:text="确定" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

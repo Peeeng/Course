@@ -64,4 +64,5 @@
     <dimen name="affairFontSize">18sp</dimen>
     <dimen name="hintFontSize">16sp</dimen>
 
+    <dimen name="bigBtnMargin">5dp</dimen>
 </resources>
