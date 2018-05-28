@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+
+        <!-- 定义当button 处于pressed 状态时的形态。-->
+        <shape>
+            <gradient
+                android:startColor="#5e87af"
+                android:centerColor="#1c5694"
+                android:endColor="#476d8d"
+                android:centerX="0.5"
+                android:centerY="0.5"/>
+            <stroke android:width="1.5dp" android:color="#697789" />
+            <corners android:radius="5dp" />
+            <padding android:left="10dp" android:top="10dp"
+                android:bottom="10dp" android:right="10dp" />
+        </shape>
+    </item>
+
+
+    <item android:state_enabled="true">
+        <!-- 定义当button 处于pressed 状态时的形态。-->
+        <shape>
+            <gradient
+                android:startColor="#7693b0"
+                android:centerColor="#306daf"
+                android:endColor="#66839c"
+                android:centerX="0.5"
+                android:centerY="0.5"/>
+            <stroke android:width="1.5dp" android:color="#697789" />
+            <corners android:radius="5dp" />
+            <padding android:left="10dp" android:top="10dp"
+                android:bottom="10dp" android:right="10dp" />
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--星期栏高度-->
+    <dimen name="weekDayHeight">45dp</dimen>
+    <!--星期栏宽度-->
+    <dimen name="weekDayWidth">18dp</dimen>
+    <!--星期栏上边距-->
+    <dimen name="weekDayMarTop">0dp</dimen>
+    <!--星期栏左边距-->
+    <dimen name="weekDayMarLeft">0dp</dimen>
+
+    <!--时段栏高度-->
+    <dimen name="timeIndexHeight">40dp</dimen>
+    <!--时段栏宽度-->
+    <dimen name="timeIndexWidth">18dp</dimen>
+    <!--时段栏上边距-->
+    <dimen name="timeIndexMarTop">0dp</dimen>
+
+    <!--actionBar边距-->
+    <dimen name="actionBarMargin">5dp</dimen>
+    <!--actionBar字体大小-->
+    <dimen name="actionFontSize">22sp</dimen>
+    <!--actionBar高度-->
+    <dimen name="actionBarHeight">60dp</dimen>
+
+    <!---->
+    <dimen name="addCourseXlsWidth">200dp</dimen>
+    <dimen name="btokMarginTop">300dp</dimen>
+    <dimen name="btokWidth">300dp</dimen>
+
+    <!--导航按钮栏高度-->
+    <dimen name="navBtHeight">60dp</dimen>
+    <dimen name="navBtMarginLeft">5dp</dimen>
+    <dimen name="navBtMarginRight">5dp</dimen>
+    <dimen name="navBtMarginBottom">5dp</dimen>
+
+
+    <!--课程内容的高度-->
+    <dimen name="gridItemHeight">90dp</dimen>
+
+    <!--课程内容内边距-->
+    <dimen name="courseItemPadding">2dp</dimen>
+
+    <!--任务页面-->
+    <dimen name="taskFontSize">18dp</dimen>
+
+    <!--课程详情-->
+    <dimen name="detailTitleFontSize">20sp</dimen>
+    <dimen name="detailFontSize">18sp</dimen>
+    <dimen name="courseMargin">16dp</dimen>
+    <dimen name="courseHeight">40dp</dimen>
+    <dimen name="detailItemBottomMargin">10dp</dimen>
+    <dimen name="detailItemLeftMargin">20dp</dimen>
+
+    <!--时间设置-->
+    <dimen name="timeTitleFontSize">20sp</dimen>
+    <dimen name="timeFontSize">20sp</dimen>
+    <dimen name="timeSetMargin">16dp</dimen>
+    <dimen name="timeSetHeight">40dp</dimen>
+    <dimen name="timeSetBottomMargin">10dp</dimen>
+    <dimen name="timeSetLeftMargin">20dp</dimen>
+
+    <!--课程编辑-->
+    <dimen name="affairFontSize">18sp</dimen>
+    <dimen name="hintFontSize">16sp</dimen>
+
+    <dimen name="bigBtnMargin">5dp</dimen>
+</resources>
