@@ -1,27 +1,19 @@
 package com.example.j_king.course;
 
 import android.app.TimePickerDialog;
-import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.app.TimePickerDialog.OnTimeSetListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.j_king.getsetdata.SharedPreferencesHelper;
-import com.example.j_king.myunit.CourseSpeakUnit;
+import com.example.j_king.myutil.CourseSpeakUtil;
 
-import org.w3c.dom.Text;
-
-import java.sql.Time;
 import java.util.Calendar;
 
 /**
@@ -53,12 +45,12 @@ public class TimeActivity extends AppCompatActivity {
         time910Text = (TextView) findViewById(R.id.time910Text);
         time1112Text = (TextView) findViewById(R.id.time1112Text);
 
-        time12Text.setText(sp.getString(CourseSpeakUnit.course12Time));
-        time34Text.setText(sp.getString(CourseSpeakUnit.course34Time));
-        time56Text.setText(sp.getString(CourseSpeakUnit.course56Time));
-        time78Text.setText(sp.getString(CourseSpeakUnit.course78Time));
-        time910Text.setText(sp.getString(CourseSpeakUnit.course910Time));
-        time1112Text.setText(sp.getString(CourseSpeakUnit.course1112Time));
+        time12Text.setText(sp.getString(CourseSpeakUtil.course12Time));
+        time34Text.setText(sp.getString(CourseSpeakUtil.course34Time));
+        time56Text.setText(sp.getString(CourseSpeakUtil.course56Time));
+        time78Text.setText(sp.getString(CourseSpeakUtil.course78Time));
+        time910Text.setText(sp.getString(CourseSpeakUtil.course910Time));
+        time1112Text.setText(sp.getString(CourseSpeakUtil.course1112Time));
         Touch touch = new Touch();
         TouchListener touchListener = new TouchListener();
         time12Text.setOnTouchListener(touch);
@@ -144,34 +136,34 @@ public class TimeActivity extends AppCompatActivity {
                 String AllMinutes = hourOfDays + ":" + minutes;
                 switch (id) {
                     case R.id.time12Text:
-                        sp.putValue(CourseSpeakUnit.course12HTime, hourOfDay);
-                        sp.putValue(CourseSpeakUnit.course12MTime, minute);
-                        sp.putValue(CourseSpeakUnit.course12Time, AllMinutes);
+                        sp.putValue(CourseSpeakUtil.course12HTime, hourOfDay);
+                        sp.putValue(CourseSpeakUtil.course12MTime, minute);
+                        sp.putValue(CourseSpeakUtil.course12Time, AllMinutes);
                         break;
                     case R.id.time34Text:
-                        sp.putValue(CourseSpeakUnit.course34HTime, hourOfDay);
-                        sp.putValue(CourseSpeakUnit.course34MTime, minute);
-                        sp.putValue(CourseSpeakUnit.course34Time, AllMinutes);
+                        sp.putValue(CourseSpeakUtil.course34HTime, hourOfDay);
+                        sp.putValue(CourseSpeakUtil.course34MTime, minute);
+                        sp.putValue(CourseSpeakUtil.course34Time, AllMinutes);
                         break;
                     case R.id.time56Text:
-                        sp.putValue(CourseSpeakUnit.course56HTime, hourOfDay);
-                        sp.putValue(CourseSpeakUnit.course56MTime, minute);
-                        sp.putValue(CourseSpeakUnit.course56Time, AllMinutes);
+                        sp.putValue(CourseSpeakUtil.course56HTime, hourOfDay);
+                        sp.putValue(CourseSpeakUtil.course56MTime, minute);
+                        sp.putValue(CourseSpeakUtil.course56Time, AllMinutes);
                         break;
                     case R.id.time78Text:
-                        sp.putValue(CourseSpeakUnit.course78HTime, hourOfDay);
-                        sp.putValue(CourseSpeakUnit.course78MTime, minute);
-                        sp.putValue(CourseSpeakUnit.course78Time, AllMinutes);
+                        sp.putValue(CourseSpeakUtil.course78HTime, hourOfDay);
+                        sp.putValue(CourseSpeakUtil.course78MTime, minute);
+                        sp.putValue(CourseSpeakUtil.course78Time, AllMinutes);
                         break;
                     case R.id.time910Text:
-                        sp.putValue(CourseSpeakUnit.course910HTime, hourOfDay);
-                        sp.putValue(CourseSpeakUnit.course910MTime, minute);
-                        sp.putValue(CourseSpeakUnit.course910Time, AllMinutes);
+                        sp.putValue(CourseSpeakUtil.course910HTime, hourOfDay);
+                        sp.putValue(CourseSpeakUtil.course910MTime, minute);
+                        sp.putValue(CourseSpeakUtil.course910Time, AllMinutes);
                         break;
                     case R.id.time1112Text:
-                        sp.putValue(CourseSpeakUnit.course1112HTime, hourOfDay);
-                        sp.putValue(CourseSpeakUnit.course1112MTime, minute);
-                        sp.putValue(CourseSpeakUnit.course1112Time, AllMinutes);
+                        sp.putValue(CourseSpeakUtil.course1112HTime, hourOfDay);
+                        sp.putValue(CourseSpeakUtil.course1112MTime, minute);
+                        sp.putValue(CourseSpeakUtil.course1112Time, AllMinutes);
                         break;
 
                 }

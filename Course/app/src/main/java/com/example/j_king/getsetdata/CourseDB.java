@@ -7,6 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.j_king.pojo.CourseData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by J-King on 2017/10/12.
  */
@@ -35,15 +40,15 @@ public class CourseDB {
     //课程地点
     public static final String cAddr = "cAddr";
 
-    public CourseDB(Context context){
-        courseDBHelper = getInstance(context) ;
-        db = courseDBHelper.getWritableDatabase() ;
+    public CourseDB(Context context) {
+        courseDBHelper = getInstance(context);
+        db = courseDBHelper.getWritableDatabase();
     }
 
-    private static synchronized CourseDBHelper getInstance(Context context){
-        if(courseDBHelper == null)
-            courseDBHelper = new CourseDBHelper(context) ;
-        return courseDBHelper ;
+    private static synchronized CourseDBHelper getInstance(Context context) {
+        if (courseDBHelper == null)
+            courseDBHelper = new CourseDBHelper(context);
+        return courseDBHelper;
     }
 
     private static class CourseDBHelper extends SQLiteOpenHelper {
@@ -76,30 +81,44 @@ public class CourseDB {
     }
 
 
-
     public long insertCourse(ContentValues values) {
         long rowId = db.insert(DB_TABLE, null, values);
         Log.i(TAG, "insertCourse: 插入第" + rowId + "行数据。");
         return rowId;
     }
 
-    public  void deleteTable(){
-
-        db.delete(DB_TABLE,null,null) ;
-
+    public void deleteTable() {
+        db.delete(DB_TABLE, null, null);
     }
-    public Cursor queryCourse(String []columns,String selection,String []selectionArgs ,String groupBy,String having,String orderBy) {
 
-        Cursor cur = db.query(DB_TABLE, columns, selection, selectionArgs, groupBy, having, orderBy);
-//        cur.close();
-        return cur ;
+    public Cursor queryCourse(String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
+        return db.query(DB_TABLE, columns, selection, selectionArgs, groupBy, having, orderBy);
     }
-    public int updateByCourse(ContentValues values, String whereClause,String[] whereArgs){
-        int rtn = db.update(DB_TABLE,values,whereClause,whereArgs);
-        return rtn ;
+
+    public List<CourseData> queryCourseData(String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
+        Cursor cursor = db.query(DB_TABLE, columns, selection, selectionArgs, groupBy, having, orderBy);
+        List<CourseData> courseDataList = new ArrayList<>();
+        if(cursor.moveToFirst() ){
+            do{
+                CourseData courseData = new CourseData();
+                courseData.setcNo(cursor.getInt(cursor.getColumnIndex(CourseDB.cNo)));
+                courseData.setcName(cursor.getString(cursor.getColumnIndex(CourseDB.cName)));
+                courseData.setcAddr( cursor.getString(cursor.getColumnIndex(CourseDB.cAddr)));
+                courseData.setcTeacher(cursor.getString(cursor.getColumnIndex(CourseDB.cTeacher)));
+                courseData.setcTime(cursor.getInt(cursor.getColumnIndex(CourseDB.cTime)));
+                courseData.setcWeekday(cursor.getInt(cursor.getColumnIndex(CourseDB.cWeekday)));
+                courseData.setcWeeks(cursor.getString(cursor.getColumnIndex(CourseDB.cWeeks)));
+                courseDataList.add(courseData);
+            }while(cursor.moveToNext());
+        }
+        return courseDataList;
     }
-    public int deleteByCourse(String whereClause,String[] whereArgs){
-        int rtn = db.delete(DB_TABLE,whereClause,whereArgs);
-        return rtn ;
+
+    public int updateByCourse(ContentValues values, String whereClause, String[] whereArgs) {
+        return db.update(DB_TABLE, values, whereClause, whereArgs);
+    }
+
+    public int deleteByCourse(String whereClause, String[] whereArgs) {
+        return db.delete(DB_TABLE, whereClause, whereArgs);
     }
 }

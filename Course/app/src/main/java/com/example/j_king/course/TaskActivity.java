@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.j_king.getsetdata.SharedPreferencesHelper;
 import com.example.j_king.myView.SeekBarDialog;
 import com.example.j_king.task.AlarmService;
-import com.example.j_king.myunit.MyTTSCheck;
+import com.example.j_king.myutil.MyTTSCheck;
 
 
 public class TaskActivity extends AppCompatActivity   {

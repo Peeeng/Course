@@ -5,7 +5,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
@@ -17,21 +16,15 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.j_king.course.R;
-import com.example.j_king.course.TimeActivity;
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.CurWeekSet;
-import com.example.j_king.getsetdata.SharedPreferencesHelper;
 import com.example.j_king.mylistener.MySensorEventListener;
-import com.example.j_king.myunit.CourseSpeakUnit;
+import com.example.j_king.myutil.CourseSpeakUtil;
 import com.example.j_king.pojo.VoiceContent;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @name Course
@@ -42,7 +35,7 @@ import java.util.Map;
  */
 public class TaskServices extends Service {
     private static final String TAG = "TaskServices";
-    private CourseSpeakUnit courseSpeakUnit ;
+    private CourseSpeakUtil courseSpeakUtil;
 
 //    private  List<Map<String, Object>> curDayCourse ;
     private int addDay = 0 ;
@@ -69,7 +62,7 @@ public class TaskServices extends Service {
         voicedTimes = 0;
         getCurDayAndWeek();
 
-        courseSpeakUnit = new CourseSpeakUnit(this) ;
+        courseSpeakUtil = new CourseSpeakUtil(this) ;
         //获取小图标
         smallIcon = R.drawable.course;
         //获取大图标
@@ -168,7 +161,7 @@ public class TaskServices extends Service {
      */
     public VoiceContent getNextCourse() {
         int addDay = 0;
-        VoiceContent voiceContent = courseSpeakUnit.getNextVoiceContent(curWeek,curDay,addDay,voicedTimes) ;
+        VoiceContent voiceContent = courseSpeakUtil.getNextVoiceContent(curWeek,curDay,addDay,voicedTimes) ;
         while (voiceContent.getMessage().equals("noCourseToday")) {
             //如果当天的课程信息都被呼叫完，获取第二天的课程并返回
             ++addDay ;
@@ -179,7 +172,7 @@ public class TaskServices extends Service {
                 return null;
             }
             voicedTimes = 0;
-            voiceContent = courseSpeakUnit.getNextVoiceContent(curWeek,curDay,addDay,voicedTimes) ;
+            voiceContent = courseSpeakUtil.getNextVoiceContent(curWeek,curDay,addDay,voicedTimes) ;
         }
         voicedTimes = voiceContent.getVoicedTime() ;
         return voiceContent ;

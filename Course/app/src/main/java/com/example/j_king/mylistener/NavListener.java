@@ -13,7 +13,7 @@ import com.example.j_king.course.TimeActivity;
  * @name Course
  * @class name：com.example.j_king.navlistener
  * @class describe
- * @anthor J-King QQ:1032006226
+ * @anthor J-King QQ:2354345263
  * @time 2017/10/30 21:06
  * @change
  * @chang time

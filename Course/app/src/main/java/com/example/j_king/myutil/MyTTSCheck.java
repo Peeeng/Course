@@ -1,4 +1,4 @@
-package com.example.j_king.myunit;
+package com.example.j_king.myutil;
 
 import android.content.Context;
 import android.content.DialogInterface;

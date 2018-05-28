@@ -1,4 +1,4 @@
-package com.example.j_king.myunit;
+package com.example.j_king.myutil;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -22,7 +22,7 @@ import java.util.Map;
  * @anthor J-King QQ:2354345263
  * @time 2017/12/27 16:12
  */
-public class CourseSpeakUnit {
+public class CourseSpeakUtil {
     public static final String course12HTime = "course12HTime";
     public static final String course34HTime = "course34HTime";
     public static final String course56HTime = "course56HTime";
@@ -44,7 +44,7 @@ public class CourseSpeakUnit {
     public static final String course910Time = "course910Time";
     public static final String course1112Time = "course1112Time";
 
-    public static final String TAG = "CourseSpeakUnit";
+    public static final String TAG = "CourseSpeakUtil";
     public Context context;
     private static CourseDB courseDB;
     private SharedPreferencesHelper sp;
@@ -55,7 +55,7 @@ public class CourseSpeakUnit {
     /**
      * @param context 上下文
      */
-    public CourseSpeakUnit(Context context) {
+    public CourseSpeakUtil(Context context) {
         this.context = context;
         courseDB = new CourseDB(context);
         sp = new SharedPreferencesHelper(context, "taskConfig");
