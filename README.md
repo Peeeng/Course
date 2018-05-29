@@ -17,7 +17,7 @@ Course 是用于展示**南昌航空大学**课程表的一款轻量级Android�
 > * 课前音量调整，上课前5分钟将音量降低到设置值，避免影响课堂纪律。(老师们貌似对这个不关注，也就懒得实现了)
 > * 课后音量调整，下课后将音量提高到设置值，防止错过重要通话、短信等。(同上)
 > * 通过摇一摇手机进行语音播报或发送通知消息提醒下一节课的时间地点。(敬请关注)
-> * 兼容Android 8.0 (测试机型：小米6、荣耀9、)
+> * 兼容Android 8.0 (测试机型：小米6、荣耀9、三星s8)
 
 ----------
 ## 使用说明 
@@ -37,10 +37,7 @@ Course 是用于展示**南昌航空大学**课程表的一款轻量级Android�
 > 2. 点击首页列表的空白单元格填写即可。
 
 ##### [演示视频](https://github.com/Peeeng/Course/raw/master/release/%E6%BC%94%E7%A4%BA.mp4)
-<video id="video" controls="" preload="none" poster="https://github.com/Peeeng/Course/raw/master/screenshoot/demo.jpg">
-      <source id="mp4" src="https://github.com/Peeeng/Course/raw/master/release/%E6%BC%94%E7%A4%BA.mp4">
-      <p>Your user agent does not support the HTML5 Video element.</p>
-</video>
+
 
 -----------
 
@@ -50,16 +47,22 @@ Course 是用于展示**南昌航空大学**课程表的一款轻量级Android�
 > * 美化UI界面。
 > * 摇一摇提醒课程信息。
 
+----------
+
 ## 贡献
 想为这个开源项目做贡献？
 > * 发现程序Bug，并在Issues中提出你的问题。
-> * 共同编码完善本项目。
-> * 提出你的优化建议
+> * 共同编码完善本项目(Windows 10 + Android Studio2.3)。
+> * 提出你的优化建议。
+
+---------
 
 ## 联系作者
 邮箱：2354345263@qq.com
 
+----------
+
 ## 赞助
-如果你喜欢这个项目的话，欢迎赞助个块儿八毛。
-![支付宝](https://github.com/Peeeng/Course/raw/master/screenshoot/alipay.jpg)
-![微信](https://github.com/Peeeng/Course/raw/master/screenshoot/wepay.jpg)
+如果你喜欢这个项目的话，欢迎赞助个块儿八毛。  
+<img src="https://github.com/Peeeng/Course/raw/master/screenshoot/alipay.jpg" width = "300" height = "350" alt="支付宝" align=center />
+<img src="https://github.com/Peeeng/Course/raw/master/screenshoot/wepay.jpg" width = "300" height = "350" alt="微信" align=center />
