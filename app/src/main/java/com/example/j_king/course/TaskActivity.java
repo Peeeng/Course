@@ -35,9 +35,6 @@ public class TaskActivity extends AppCompatActivity   {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
 
-
-        Log.e(TAG, "onCreate: ");
-
         switchOpenTTS  = (Switch) findViewById(R.id.switchOpenTTS);
         switchNotification = (Switch) findViewById(R.id.switchNotification);
         switchVoiceDown  = (Switch) findViewById(R.id.switchVoiceDown);
@@ -76,7 +73,6 @@ public class TaskActivity extends AppCompatActivity   {
         if(myTTSCheck != null)
             myTTSCheck.stopTTS();
         myTTSCheck = null ;
-        Log.e(TAG, "onDestroy: " );
     }
 
     private void prepareListen(){
@@ -162,13 +158,6 @@ public class TaskActivity extends AppCompatActivity   {
                     //这个返回结果表明TTS Engine可以用
                     Log.i(TAG, "TTS Engine is enabled!");
                     myTTSCheck = new MyTTSCheck(this) ;
-/*                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    myTTSCheck.speakVoice("已启动课程任务。");
-                    myTTSCheck.stopTTS();*/
 
                     Intent alarmServices = new Intent(TaskActivity.this.getApplicationContext(),AlarmService.class) ;
                     startService(alarmServices);

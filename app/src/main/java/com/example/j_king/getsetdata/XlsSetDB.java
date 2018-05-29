@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by J-King on 2017/10/20.
- */
 
 public class XlsSetDB {
     public static final String DB_TABLE = "xlsset" ;
@@ -61,10 +58,8 @@ public class XlsSetDB {
         }
     }
 
-
-
     /**
-     *
+     * 插入数据到xlsset表
      * @param nullColumnsHack content为空时，新增nullColumnsHack,并为它赋值为空
      * @param content 要插入的内容
      */
@@ -74,17 +69,14 @@ public class XlsSetDB {
     }
 
     public Cursor queryFromXlsSet(String [] columns,String selection,String [] selectionArgs,String groupBy,String having,String orderBy){
-        Cursor cursor = db.query(DB_TABLE,columns,selection,selectionArgs,groupBy,having,orderBy) ;
-        return cursor ;
+        return db.query(DB_TABLE,columns,selection,selectionArgs,groupBy,having,orderBy) ;
     }
 
     public int updateByClause(String table,ContentValues values, String whereClause,String[] whereArgs){
-        int rtn = db.update(table,values,whereClause,whereArgs);
-        return rtn ;
+        return db.update(table,values,whereClause,whereArgs);
     }
 
     public int deleteTable(){
-        int  rtn = db.delete(DB_TABLE,null,null) ;
-        return rtn ;
+        return  db.delete(DB_TABLE,null,null) ;
     }
 }

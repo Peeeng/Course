@@ -3,20 +3,12 @@ package com.example.j_king.getsetdata;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * @name Course
- * @class name：com.example.j_king.getsetdata
- * @class describe
- * @anthor J-King QQ:2354345263
- * @time 2017/11/14 9:29
- */
+
 public class SharedPreferencesHelper {
     private SharedPreferences sp ;
     private SharedPreferences.Editor editor ;
-    private Context context ;
 
     public SharedPreferencesHelper(Context context , String name){
-        this.context = context ;
         sp = context.getSharedPreferences(name,0) ;
     }
 

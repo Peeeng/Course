@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-import android.widget.GridView;
-import android.widget.SimpleAdapter;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,9 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by J-King on 2017/10/19.
+ * 读取数据库
  */
-
 public class ReadSqlite {
     private CourseDB courseDB ;
     private static final String TAG = "ReadSqlite";
@@ -49,9 +46,9 @@ public class ReadSqlite {
     }
 
     /**
-     *
+     * 获取指定周次的数据
      * @param week 当前学习周次
-     * @return
+     * @return 课程名和地点列表
      */
     public List< Map<String , String> > getSelectWeekData(Integer week){
         List< Map<String , String > > cNameAndtNameList = new ArrayList<>() ;
@@ -61,7 +58,6 @@ public class ReadSqlite {
 
         for(int times = 1 ;times <= 12 ;times = times + 2 )
             for(int weekday = 1 ; weekday <= 7 ;weekday++){
-
                 String []selectionArgs = new String[]{ week.toString(),Integer.valueOf(times).toString(),Integer.valueOf(weekday).toString()};
                 Cursor cursor = courseDB.queryCourse(columns,selection,selectionArgs,null,null,null);
                 int num = cursor.getCount();
@@ -73,19 +69,14 @@ public class ReadSqlite {
                 }
                 else if (num == 1){
                     cursor.moveToFirst() ;
-                    String courseName ;
-                    String courseAddr   ;
                     Map<String , String > cNameAndtName = new HashMap<>() ;
-                    courseName = cursor.getString(cursor.getColumnIndex(CourseDB.cName)) ;
-                    courseAddr = cursor.getString(cursor.getColumnIndex(CourseDB.cAddr)) ;
-                    cNameAndtName.put(CourseDB.cName,courseName) ;
-                    cNameAndtName.put(CourseDB.cAddr,courseAddr) ;
+                    cNameAndtName.put(CourseDB.cName,cursor.getString(cursor.getColumnIndex(CourseDB.cName))) ;
+                    cNameAndtName.put(CourseDB.cAddr,cursor.getString(cursor.getColumnIndex(CourseDB.cAddr))) ;
                     cNameAndtNameList.add(cNameAndtName) ;
                 }
                 else
                     Log.e(TAG, "getSelectWeekData: 该时间存在两个或以上课程" );
                 cursor.close();
-
             }
 
         return cNameAndtNameList ;

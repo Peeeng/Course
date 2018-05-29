@@ -95,6 +95,16 @@ public class CourseDB {
         return db.query(DB_TABLE, columns, selection, selectionArgs, groupBy, having, orderBy);
     }
 
+    /**
+     *
+     * @param columns 查询列
+     * @param selection where字句
+     * @param selectionArgs where字句中占位符的内容
+     * @param groupBy group项
+     * @param having having项
+     * @param orderBy order by项
+     * @return 课程表数据列表
+     */
     public List<CourseData> queryCourseData(String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
         Cursor cursor = db.query(DB_TABLE, columns, selection, selectionArgs, groupBy, having, orderBy);
         List<CourseData> courseDataList = new ArrayList<>();

@@ -13,29 +13,23 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 /**
- * Created by J-King on 2017/9/6.
- * 获取Xls表里的数据
+ * 获取xls文件数据
  */
-
-public class XlsData {
+class XlsData {
     private Workbook workBook;
     private Sheet workSheet;
     private Integer rowCount ;
     private Integer columnCount ;
-    private InputStream input ;
 
-    public XlsData(InputStream in){
-        input = in ;
+    XlsData(InputStream in){
         try {
-            workBook = Workbook.getWorkbook(input) ;
+            workBook = Workbook.getWorkbook(in) ;
             workSheet = workBook.getSheet(0);
 
             rowCount = workSheet.getRows();
             columnCount = workSheet.getColumns();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (BiffException e) {
+        } catch (IOException | BiffException e) {
             e.printStackTrace();
         }
 
@@ -47,7 +41,7 @@ public class XlsData {
      * @param rowIndex 表格的行标
      * @return 返回表格的（列标，行标）位置的数据
      */
-    public List<Map<String,Object>> getOneData(int columnIndex,int rowIndex){
+    private List<Map<String,Object>> getOneData(int columnIndex,int rowIndex){
         String data =  workSheet.getCell(columnIndex,rowIndex).getContents();//以String类型输入
         if(data.equals(" ") || data.isEmpty())
             return null ;
@@ -82,13 +76,12 @@ public class XlsData {
     }
 
     /**
-     * @Description: 获取每个单元格的数据
-     * @return: 单元格数据列表
+     * 获取每个单元格的数据
+     * @return  单元格数据列表
      */
-    public ArrayList<Map<String,Object>> getAllData(){
+    ArrayList<Map<String,Object>> getAllData(){
         ArrayList<Map<String,Object>> courseList = new ArrayList<>() ;
         List<Map<String,Object>> tmpList  ;
-//        Map<String ,Object> item = new HashMap<>() ;
 
         for(int i = 1 ; i < columnCount ; i++){
             for(int j = 3 ; j < rowCount ; j++){
@@ -121,18 +114,17 @@ public class XlsData {
         int count = 0 ;
         String[] weekBeginEnd = classWeeks.split(",");
         int [] weeks = new int[25];
-        for(int i = 0 ; i < weekBeginEnd.length ;i++ ){
-            if(weekBeginEnd[i].contains("-")){
-                String[] weekBE = weekBeginEnd[i].split("-") ;
+        for (String aWeekBeginEnd : weekBeginEnd) {
+            if (aWeekBeginEnd.contains("-")) {
+                String[] weekBE = aWeekBeginEnd.split("-");
                 int begin = Integer.parseInt(weekBE[0]);
-                int end = Integer.parseInt(weekBE[1]) ;
+                int end = Integer.parseInt(weekBE[1]);
 
-                for(int j = begin ; j <= end ;j++ ){
-                    weeks[count++] = j ;
+                for (int j = begin; j <= end; j++) {
+                    weeks[count++] = j;
                 }
-            }
-            else
-                weeks[count++] = Integer.valueOf(weekBeginEnd[i]) ;
+            } else
+                weeks[count++] = Integer.valueOf(aWeekBeginEnd);
         }
         return  Arrays.copyOf(weeks, count);
     }
@@ -140,7 +132,7 @@ public class XlsData {
     /**
      * 关闭数据的连接
      */
-    public void closeConnect(){
+    void closeConnect(){
         workBook.close();
     }
 }

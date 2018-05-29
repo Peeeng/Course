@@ -8,17 +8,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-/**
- * @name Course
- * @class name：com.example.j_king.task
- * @class describe
- * @anthor J-King QQ:1032006226
- * @time 2017/11/1 18:14
- * @change
- * @chang time
- * @class describe
- */
-
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String TAG = "AlarmReceiver";
 
@@ -36,17 +25,17 @@ public class AlarmReceiver extends BroadcastReceiver {
     /**
      *
      * @param context
-     * @param ServicesName
+     * @param serviceName
      * @return 判断taskservices是否在运行状态
      */
-    private boolean isTaskServicesRunning(Context context , String ServicesName){
+    private boolean isTaskServicesRunning(Context context , String serviceName){
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) manager.getRunningServices(30);
         for(ActivityManager.RunningServiceInfo serviceInfo : runningService){
             serviceInfo.service.getClassName()
-                    .equals(ServicesName) ;
+                    .equals(serviceName) ;
             if(serviceInfo.service.getClassName()
-                    .equals(ServicesName))
+                    .equals(serviceName))
                 return true ;
         }
         return false ;

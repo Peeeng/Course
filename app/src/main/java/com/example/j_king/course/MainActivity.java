@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
@@ -117,10 +116,10 @@ public class MainActivity extends AppCompatActivity {
                     showAddCourseDialog(curWeek, cWeekday, cTime);
                 else{
                     CourseData course = courseDataList.get(0);
-                    if (!course.getcTeacher().equals("无")) {
-                        showCourseDetail(course);
-                    }else{
+                    if (course.getcTeacher().equals("无")) {
                         showDeleteCourseDialog(course);
+                    }else{
+                        showCourseDetail(course);
                     }
                 }
             }
@@ -129,17 +128,17 @@ public class MainActivity extends AppCompatActivity {
         selectWeek.setOnItemSelectedListener(listenerSelectWeek);
         gridCourse.setOnItemClickListener(listenerGridCourse);
 
-        Button btMain = (Button) findViewById(R.id.btMain);
-        Button btTask = (Button) findViewById(R.id.btTask);
-        Button btTime = (Button) findViewById(R.id.btTime);
-        Button btSet = (Button) findViewById(R.id.btSet);
+        findViewById(R.id.btSet).setOnClickListener(listenerSet);
 
-        btSet.setOnClickListener(listenerSet);
-        btTask.setOnClickListener(new NavListener(MainActivity.this));
-        btMain.setOnClickListener(new NavListener(MainActivity.this));
-        btTime.setOnClickListener(new NavListener(MainActivity.this));
+        findViewById(R.id.btTask).setOnClickListener(new NavListener(MainActivity.this));
+        findViewById(R.id.btMain).setOnClickListener(new NavListener(MainActivity.this));
+        findViewById(R.id.btTime).setOnClickListener(new NavListener(MainActivity.this));
     }
 
+    /**
+     * 显示课程详情--名称、时间、地点、教师、教室、周次
+     * @param courseData 课程详细数据
+     */
     private void showCourseDetail(CourseData courseData) {
         String cTimes = "周 " + weekdays[courseData.getcWeekday()] + courseData.getcTime() + "-" + (courseData.getcTime() + 1) + " 节";
 
@@ -155,7 +154,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showDeleteCourseDialog(final CourseData courseData){  // 该项为事件
+    /**
+     * 显示删除(编辑)事件的对话框
+     * @param courseData 事件的详细数据
+     */
+    private void showDeleteCourseDialog(final CourseData courseData){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         View viewDialog = inflater.inflate(R.layout.affair, null);
@@ -322,8 +325,7 @@ public class MainActivity extends AppCompatActivity {
                         CourseDB.cWeekday + "=? and " +
                         CourseDB.cTime + "=?";
         String[] selectionArgs = {String.valueOf(curWeek), String.valueOf(cWeekday), String.valueOf(cTime)};
-        List<CourseData> courseDataList = courseDB.queryCourseData(null, selection, selectionArgs, null, null, null);
-        return courseDataList;
+        return courseDB.queryCourseData(null, selection, selectionArgs, null, null, null);
     }
 }
 

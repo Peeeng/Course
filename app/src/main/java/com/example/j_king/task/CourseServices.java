@@ -22,7 +22,7 @@ import java.util.Locale;
  * @name Course
  * @class name：com.example.j_king.task
  * @class describe
- * @anthor J-King QQ:1032006226
+ * @anthor J-King QQ:2354345263
  * @time 2017/11/1 17:57
  */
 public class CourseServices extends Service {

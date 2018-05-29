@@ -49,14 +49,9 @@ public class XlsSetActivity extends AppCompatActivity {
     private XlsSetDB xlsSetDB ;
     private CourseDB courseDB ;
     private ReadSqlite readSqlite ;
-    private Button btSelectXls;
 
-
-    private Button btShowXls ;
     private EditText editXlsUrl;
     private Spinner spinnerWeek ;
-    private Button btOk ;
-    private TextView link;
 
     private static final int SELECTXLS = 0x0011;
     private static final int SHOWXLS = 0x0012;
@@ -87,7 +82,7 @@ public class XlsSetActivity extends AppCompatActivity {
     }
 
     /**
-     * 初始化数据
+     * 初始化数据--设置周次下拉框的值和课程表文件的路径
      */
     public void initData(){
         Cursor cur = xlsSetDB.queryFromXlsSet(new String[]{XlsSetDB.xlsPath,XlsSetDB.curWeek},null,null,null,null,null);
@@ -112,12 +107,12 @@ public class XlsSetActivity extends AppCompatActivity {
      */
     private void prepareListen(){
 
-        btSelectXls = (Button) findViewById(R.id.btSelectXls);
+        Button btSelectXls = (Button) findViewById(R.id.btSelectXls);
         editXlsUrl = (EditText) findViewById(R.id.editXlsUrl);
-        btShowXls = (Button) findViewById(R.id.btShowXls) ;
+        Button btShowXls = (Button) findViewById(R.id.btShowXls) ;
         spinnerWeek = (Spinner) findViewById(R.id.spinnerWeek) ;
-        btOk = (Button) findViewById(R.id.btOk) ;
-        link=(TextView)findViewById(R.id.link);
+        Button  btOk = (Button) findViewById(R.id.btOk) ;
+        TextView link=(TextView)findViewById(R.id.link);
         link.setText(
                 Html.fromHtml(
                         "<b>还没有下载课表?</b>"+"<a href=\"http://www.nchu.edu.cn/\">点击这里下载课程表</a>" ));
@@ -144,7 +139,6 @@ public class XlsSetActivity extends AppCompatActivity {
         View.OnClickListener listenerBtOk = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(xlsPath !=  null && !xlsPath.equals("")){
                     updateCourseTableContent(xlsPath);
                 }
@@ -180,16 +174,14 @@ public class XlsSetActivity extends AppCompatActivity {
             //得到uri，后面就是将uri转化成file的过程。
             xlsUri = data.getData();
             switch (requestCode) {
-                //请求码为--浏览，获取选中的路径
+                //请求码为: 浏览，获取选中的路径
                 case SELECTXLS:
-                    /*xlsPath = getRealFilePath(this,xlsUri);
-                    xlsPath = xlsPath.replace("/root","");*/
                     xlsPath = getPath(this,xlsUri);
                     String [] tmp = xlsPath.split("/");
                     String xlsName = tmp[tmp.length-1];
                     editXlsUrl.setText(xlsName);
                     break;
-                //请求码为--预览
+                //请求码为: 预览
                 case SHOWXLS:
                     break;
             }
@@ -258,17 +250,14 @@ public class XlsSetActivity extends AppCompatActivity {
         return null;
     }
     /**
-     * Get the value of the data column for this Uri. This is useful for
-     * MediaStore Uris, and other file-based ContentProviders.
-     *
+     * 得到这个Uri的数据列的值。适用于媒体存储uri和其他基于文件的ContentProviders。
      * @param context       The context.
      * @param uri           The Uri to query.
      * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    public String getDataColumn(Context context, Uri uri, String selection,
-                                String[] selectionArgs) {
+    public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null ;
         try {
              cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
@@ -290,26 +279,14 @@ public class XlsSetActivity extends AppCompatActivity {
         return null;
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
     public boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
     public boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
     public boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
@@ -335,9 +312,10 @@ public class XlsSetActivity extends AppCompatActivity {
 
     }
 
+
     /**
-     *
      * 根据xlsPath更新Course表中内容
+     * @param xlsPath 课程表文件路径
      */
     public void updateCourseTableContent(String xlsPath){
         try {
@@ -352,8 +330,11 @@ public class XlsSetActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 修改系统设置表里的路径和周次
+     */
     private void updateXlsSetTableContent(){
-        //修改系统设置表里的路径和周次
+
         curWeek = spinnerWeek.getSelectedItemPosition() + 1  ;
         ContentValues contentValues = new ContentValues() ;
         contentValues.put(XlsSetDB.curWeek,curWeek) ;
