@@ -28,6 +28,7 @@ import com.example.j_king.pojo.CourseData;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.example.j_king.course.R.id.event;
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         //更新xlsset表中的curWeek
         ContentValues values = new ContentValues();
         values.put(XlsSetDB.curWeek, curWeek);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         values.put(XlsSetDB.startDate, simpleDateFormat.format(new Date()));
 
         XlsSetDB xlsSetDB = new XlsSetDB(this);

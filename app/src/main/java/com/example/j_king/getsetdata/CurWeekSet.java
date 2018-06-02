@@ -66,6 +66,6 @@ public class CurWeekSet {
         //计算当前星期，从周一到周日分别对应0-6
         int sDay = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7;
         int addWeek = (sDay + (int) gapDay) / 7;
-        return curWeek + addWeek;
+        return curWeek + addWeek > 20 ? 1 : curWeek + addWeek;
     }
 }

@@ -27,24 +27,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.j_king.getsetdata.CourseDB;
 import com.example.j_king.getsetdata.ReadSqlite;
 import com.example.j_king.getsetdata.XlsSetDB;
+import com.example.j_king.myutil.PathUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
  * Created by J-King on 2017/9/23.
  */
-
 public class XlsSetActivity extends AppCompatActivity {
     private XlsSetDB xlsSetDB ;
     private CourseDB courseDB ;
@@ -176,10 +179,20 @@ public class XlsSetActivity extends AppCompatActivity {
             switch (requestCode) {
                 //请求码为: 浏览，获取选中的路径
                 case SELECTXLS:
-                    xlsPath = getPath(this,xlsUri);
-                    String [] tmp = xlsPath.split("/");
-                    String xlsName = tmp[tmp.length-1];
-                    editXlsUrl.setText(xlsName);
+                    try {
+                        xlsPath = PathUtil.getPath(this,xlsUri);
+                        if(xlsPath != null){
+                            String [] tmp = xlsPath.split("/");
+                            String xlsName = tmp[tmp.length-1];
+                            editXlsUrl.setText(xlsName);
+                        }else{
+                            Toast.makeText(getApplicationContext(), "课表路径为空，请尝试换一种方式选择课表...",
+                                    Toast.LENGTH_LONG).show();
+                            Log.i(TAG, "onActivityResult: 路径为空");
+                        }
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 //请求码为: 预览
                 case SHOWXLS:
@@ -260,8 +273,7 @@ public class XlsSetActivity extends AppCompatActivity {
     public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null ;
         try {
-             cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
-
+             cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, selection, selectionArgs, null );
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA);
                 if(column_index >= 0 ) {
@@ -309,7 +321,6 @@ public class XlsSetActivity extends AppCompatActivity {
         if (grantResults.length > 0 && requestCode == REQUEST_EXTERNAL_STRONGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             ;
         }
-
     }
 
 
@@ -338,7 +349,7 @@ public class XlsSetActivity extends AppCompatActivity {
         curWeek = spinnerWeek.getSelectedItemPosition() + 1  ;
         ContentValues contentValues = new ContentValues() ;
         contentValues.put(XlsSetDB.curWeek,curWeek) ;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         contentValues.put(XlsSetDB.startDate,simpleDateFormat.format(new Date())) ;
         if(xlsPath != null && !xlsPath.equals(""))
             contentValues.put(XlsSetDB.xlsPath,xlsPath) ;
