@@ -26,7 +26,7 @@ Course 是用于展示**南昌航空大学**课程表的一款轻量级Android�
 ## 使用说明 
 
 **基本操作：**
-> 1. 下载安装app，[最新版下载地址](https://github.com/Peeeng/Course/raw/master/release/course-release-1.6.apk)。
+> 1. 下载安装app，[最新版下载地址](https://github.com/Peeeng/Course/raw/master/release/course-beta-1.7-2018-06-02.apk)。
 > 2. 依次点击【设置】-【浏览】导入课程表文件。若没课程表文件，请先下载(学校官网->教务系统->统一身份认证登陆->个人课表查询->打印)。
 > 3. 设置当前周次，点击【确定】即可显示本周课程信息。
 
