@@ -1,14 +1,17 @@
 # Course -- 南昌航空大学课程提醒（个人开发）
 
-## 🔴[Android版本下载](https://github.com/Peeeng/Course/raw/master/release/course-release-1.6.apk)🔴
+## 🔴[Android：最新版本下载](https://github.com/Peeeng/Course/raw/master/release/course-beta-1.7-2018-06-02.apk)🔴
 ## 介绍
 Course 是用于展示**南昌航空大学**课程表的一款轻量级Android应用程序，apk文件大小仅3M。  
 这个App是我去年(2017)写的，当时觉得官方App启动太慢，加上广告的展示需要近10秒钟才能看到课表，对于出门前看一次课表下了楼梯又看一次课表的超级健忘来说，这是难以接受的！于是这款App就诞生了。
 
 ---------
 
-## 发布说明
-#### **v1.6 版本说明** 
+## 版本说明
+#### **v1.7-beta-2018-06-02** 
+> * 修复部分机型导入课表时闪退的bug。
+> * 修复当前周次大于20周后闪退的bug。
+#### **v1.6-release-2018-05-29** 
 > * 导入从官网下载好的课程表文件。
 > * 设置当前学期的教学周次。
 > * 根据当前周次展示课程信息。
